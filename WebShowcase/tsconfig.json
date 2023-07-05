@@ -1,0 +1,12 @@
+{
+	"compilerOptions": {
+		"allowUnusedLabels": true,
+		"allowUnreachableCode": true,
+		"noImplicitAny": false,
+		"noEmitOnError": false,
+		"removeComments": false,
+		"sourceMap": true,
+		"target": "ES2019",
+		"moduleResolution": "nodenext"
+	}
+}

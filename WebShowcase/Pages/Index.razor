@@ -1,0 +1,41 @@
+﻿@page "/"
+@using System.Runtime.InteropServices.JavaScript;
+
+<PageTitle>Perlin Noise</PageTitle>
+
+<h1>Perlin Noise</h1>
+
+<img id="texture"/>
+
+@code
+{
+	private const int TEXTURE_SIZE = 512;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await JSHost.ImportAsync("Index", "../Pages/Index.razor.js");
+		GenerateTexture();
+	}
+
+	private void GenerateTexture()
+	{
+		PGAL.Noise.PerlinNoiseF noise = new(8);
+		Rgba32[] textureData = new Rgba32[TEXTURE_SIZE * TEXTURE_SIZE];
+		for (int y = 0; y < TEXTURE_SIZE; y++)
+		{
+			for (int x = 0; x < TEXTURE_SIZE; x++)
+			{
+				var sx = 8 * (float)x / TEXTURE_SIZE;
+				var sy = 8 * (float)y / TEXTURE_SIZE;
+				byte v = (byte)(noise.At(sx, sy) * 255);
+				textureData[TEXTURE_SIZE * y + x] = new Rgba32(v, v, v);
+			}
+		}
+
+		Image<Rgba32> a = Image<Rgba32>.LoadPixelData(new ReadOnlySpan<Rgba32>(textureData), TEXTURE_SIZE, TEXTURE_SIZE);
+		MemoryStream ms = new ();
+		a.SaveAsPng(ms);
+		byte[] pngBuffer = ms.ToArray();
+		LoadImage(pngBuffer);
+	}
+}
