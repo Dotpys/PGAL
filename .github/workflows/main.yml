@@ -16,7 +16,7 @@ jobs:
           dotnet-version: 8
 
       - name: Publish .NET Project
-        run: dotnet publish WebShowcase\WebShowcase.csproj -c Release -o release --nologo
+        run: dotnet publish ./WebShowcase/WebShowcase.csproj -c Release -o release --nologo
     
       - name: Change base-tag in index.html
         run: sed -i 's/<base href="\/" \/>/<base href="\/WolframBeta\/" \/>/g' release/wwwroot/index.html
