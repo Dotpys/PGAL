@@ -21,10 +21,18 @@
     <div class="loading-progress-text"></div>
   </div>
 
-  <div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
+  <div id="blazor-error-ui" class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="liveToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <img src="./blazor-512.png" class="rounded me-2" alt="blazor icon" style="width:20px">
+        <strong class="me-auto">Blazor</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+      </div>
+    </div>
   </div>
 
   <script src="_framework/blazor.webassembly.js"></script>
