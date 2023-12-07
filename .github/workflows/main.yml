@@ -19,7 +19,7 @@ jobs:
         run: dotnet publish ./WebShowcase/WebShowcase.csproj -c Release -o release --nologo
     
       - name: Change base-tag in index.html
-        run: sed -i 's/<base href="\/" \/>/<base href="\/WolframBeta\/" \/>/g' release/wwwroot/index.html
+        run: sed -i 's/<base href="\/" \/>/<base href="\/PGAL\/" \/>/g' release/wwwroot/index.html
     
       - name: Fix service-worker-assets.js hashes
         working-directory: release/wwwroot
