@@ -33,15 +33,15 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-\/Q+TD75bmT5dkbeTMFuSOPq3sBt\/O+REJPzakgot\/DI=",
+      "hash": "sha256-wtMt1cdDJTVuG90PPg43hxpgu8d2du1nWtdwU0Pj0zc=",
       "url": "_framework\/blazor.boot.json"
     },
     {
-      "hash": "sha256-Psxfvw7H2opzreazeC4ZzKVTQeKygwRbOj\/\/Dxs9suY=",
+      "hash": "sha256-JjVInbY\/DU3PuttcvkumcqN1I1Xe9fe6r4+XDhMk4mU=",
       "url": "_framework\/Microsoft.AspNetCore.Components.wasm"
     },
     {
-      "hash": "sha256-RNAqR0ff+baVaIhI+uEcLo9eT+pxGnBEvkCzqD+3roM=",
+      "hash": "sha256-+gOTILdpS46o8zCcSZEf4VfeJO9uKM+COgMdhnEv0\/8=",
       "url": "_framework\/Microsoft.AspNetCore.Components.Web.wasm"
     },
     {
@@ -93,7 +93,7 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.wasm"
     },
     {
-      "hash": "sha256-n7nhX72bI3uVUTqInZYkjedv+PcS4luveyEOLpDi3dk=",
+      "hash": "sha256-bzZvU840x7ZKv2Crsq8\/MeTyEugMA89NGEE7wscSDC8=",
       "url": "_framework\/PerlinNoise.wasm"
     },
     {
@@ -145,7 +145,7 @@
       "url": "_framework\/System.Runtime.InteropServices.JavaScript.wasm"
     },
     {
-      "hash": "sha256-5+gl+yGTBR0bOm91+m\/AdPZB8sOBi9rW\/vn5Dcnxx8k=",
+      "hash": "sha256-jyOYp1A\/fS4M9+nXUXzk\/4a4mN\/42m3OwPSA43APIRU=",
       "url": "_framework\/System.Runtime.wasm"
     },
     {
@@ -165,7 +165,7 @@
       "url": "_framework\/System.Text.RegularExpressions.wasm"
     },
     {
-      "hash": "sha256-Uz2Exo07cmHPbzsu4oulm3n0sPNxUVHc5ItecMk16XA=",
+      "hash": "sha256-yE3Y4PFnJqWzcA4Tu4\/7MrEcWG5f9SVCAF\/ifwqi88k=",
       "url": "_framework\/WebShowcase.wasm"
     },
     {
@@ -173,7 +173,11 @@
       "url": "WebShowcase.styles.css"
     },
     {
-      "hash": "sha256-oqUVV6nJMPJehOis7ccOaOs3jIqXyldhPDS4kN29EK8=",
+      "hash": "sha256-oEo6d+KqX5fjxTiZk\/w9NB3Mi0+ycS5yLwCKwr4IkbA=",
+      "url": "blazor-512.png"
+    },
+    {
+      "hash": "sha256-q1JEWsZ3sdCqlCMGkyM43y3O2wOiXgXVOgfj4aFkKzw=",
       "url": "css\/app.css"
     },
     {
@@ -189,7 +193,7 @@
       "url": "icon-512.png"
     },
     {
-      "hash": "sha256-Bgvsfxf0toFbJXPLm1rD9Iz5NV4fqJLEdZ56RRuUWF8=",
+      "hash": "sha256-N6AJJDuAmV+/EHypzvnxCmbF1eezkJYOoWqi92CcV74=",
       "url": "index.html"
     },
     {
@@ -197,5 +201,5 @@
       "url": "manifest.webmanifest"
     }
   ],
-  "version": "\/97C1Gim"
+  "version": "RcYVaTYi"
 };
