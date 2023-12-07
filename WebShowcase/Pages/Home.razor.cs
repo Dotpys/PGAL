@@ -4,8 +4,8 @@ using System.Runtime.Versioning;
 namespace WebShowcase.Pages;
 
 [SupportedOSPlatform("browser")]
-public partial class Index
+public partial class Home
 {
-	[JSImport("loadImage", "Index")]
+	[JSImport("loadImage", "Home")]
 	internal static partial void LoadImage(byte[] data);
 }

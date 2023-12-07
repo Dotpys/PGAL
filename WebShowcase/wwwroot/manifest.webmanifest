@@ -1,6 +1,6 @@
 {
-  "name": "WebShowcase",
-  "short_name": "WebShowcase",
+  "name": "PGAL Demo",
+  "short_name": "PGAL Demo",
   "id": "./",
   "start_url": "./",
   "display": "standalone",
