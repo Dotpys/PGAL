@@ -32,8 +32,8 @@ public class PerlinNoiseF
 			// Bottom Side = Top Side
 			for (int x = 0; x < GridSize; x++)
 			{
-				GradientMatrix[x, cellCount, 0] = GradientMatrix[cellCount, 0, 0];
-				GradientMatrix[x, cellCount, 1] = GradientMatrix[cellCount, 0, 1];
+				GradientMatrix[x, cellCount, 0] = GradientMatrix[x, 0, 0];
+				GradientMatrix[x, cellCount, 1] = GradientMatrix[x, 0, 1];
 			}
 		}
 	}
