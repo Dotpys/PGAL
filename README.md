@@ -6,3 +6,4 @@ Currently Supported Algotihms:
 
 Currently Planned:
 - Simplex Noise
+- Voronoi Diagrams
