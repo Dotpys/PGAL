@@ -10,7 +10,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebShowcase", "WebShowcase\WebShowcase.csproj", "{E68A7ED6-D8BE-4DD9-8926-6349345EABB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebShowcase", "WebShowcase\WebShowcase.csproj", "{E68A7ED6-D8BE-4DD9-8926-6349345EABB5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{0D377B3A-8932-4AC4-85FE-AEC3B80918C7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{C343E5F8-B80E-48F9-8E6E-45C7C89304F5}"
+	ProjectSection(SolutionItems) = preProject
+		main.yml = main.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +36,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0D377B3A-8932-4AC4-85FE-AEC3B80918C7} = {B8DAB256-0B6B-4EF3-9380-106F8A38CC4A}
+		{C343E5F8-B80E-48F9-8E6E-45C7C89304F5} = {0D377B3A-8932-4AC4-85FE-AEC3B80918C7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0E83965A-C265-4B27-A38B-8CE26126F8DE}
