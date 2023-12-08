@@ -50,9 +50,12 @@ jobs:
         run: touch release/wwwroot/.nojekyll
     
       - name: Change working directory
-        run: cd release
+        run: cd ./release
+
+      - name: Print working directory
+        run: pwd
 
       - name: Commit wwwroot to GitHub pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: wwwroot
+          folder: .
