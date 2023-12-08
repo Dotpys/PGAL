@@ -1,5 +1,7 @@
+/.vs
+
 */bin
 */obj
-/.vs
-*/Pages/*.js
-*.js.map
+
+/WebShowcase/Pages/*.razor.js
+/WebShowcase/Pages/*.razor.js.map
