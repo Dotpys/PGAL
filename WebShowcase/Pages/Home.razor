@@ -83,14 +83,14 @@
 
 	private void GenerateTexture()
 	{
-		PGAL.Noise.PerlinNoiseF noise = new((uint) CellCount, Wrap);
+		PGAL.Noise.PerlinNoiseF noise = new(Seed, (uint) CellCount, Wrap);
 		Rgba32[] textureData = new Rgba32[TextureSize * TextureSize];
 		for (int y = 0; y < TextureSize; y++)
 		{
 			for (int x = 0; x < TextureSize; x++)
 			{
-				var sx = 8 * (float)x / TextureSize;
-				var sy = 8 * (float)y / TextureSize;
+				var sx = CellCount * (float)x / TextureSize;
+				var sy = CellCount * (float)y / TextureSize;
 				byte v = (byte)(noise.At(sx, sy) * 255);
 				textureData[TextureSize * y + x] = new Rgba32(v, v, v);
 			}

@@ -7,12 +7,12 @@ public class PerlinNoiseF
 	private float[,,] GradientMatrix { get; init; }
 	private Func<float, float> InterpolationFunction { get; init; }
 
-	public PerlinNoiseF(uint cellCount = 16, bool wrap = true)
+	public PerlinNoiseF(int seed, uint cellCount = 16, bool wrap = true)
 	{
 		CellCount = cellCount;
 		GradientMatrix = new float[GridSize, GridSize, 2];
 		InterpolationFunction = Interpolation.FastPolynomial;
-		Random r = new();
+		Random r = new(seed);
 		for (int y = 0; y < GridSize; y++)
 		{
 			for (int x = 0; x < GridSize; x++)
