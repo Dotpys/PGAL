@@ -1,0 +1,116 @@
+﻿@page "/"
+@using System.Runtime.InteropServices.JavaScript
+@using SixLabors.ImageSharp
+@using SixLabors.ImageSharp.PixelFormats
+
+<PageTitle>Perlin Noise</PageTitle>
+
+<div class="row my-4">
+	<h1 class="text-center">Perlin Noise</h1>
+</div>
+
+<div class="row">
+	<div class="col-12 col-lg-4 mb-3">
+		<section class="card">
+			<div class="card-header">Configuration:</div>
+			<div class="card-body">
+
+				<p>Perlin Noise</p>
+
+				<div class="input-group mb-1">
+					<div class="input-group-text">Seed</div>
+					<label for="seed" class="visually-hidden">Seed</label>
+					<input type="number" class="form-control" id="seed" @bind="Seed" />
+				</div>
+
+				<div class="input-group mb-1">
+					<div class="input-group-text">Cell Count</div>
+					<label for="input_cell_count" class="visually-hidden">Cell Count</label>
+					<input type="number" class="form-control" id="input_cell_count" @bind="CellCount" />
+				</div>
+
+				<div class="input-group mb-1">
+					<div class="input-group-text">Interpolation</div>
+					<label for="select_interpolation_type" class="visually-hidden">Interpolation</label>
+					<select class="form-control" id="select_interpolation_type" @bind="InterpolationFunction">
+						<option value="@PGAL.Noise.InterpolationFunction.Cosine">Cosine</option>
+						<option value="@PGAL.Noise.InterpolationFunction.Linear">Linear</option>
+						<option value="@PGAL.Noise.InterpolationFunction.Polynomial">Polynomial</option>
+					</select>
+				</div>
+
+				<div class="form-check form-switch mb-1">
+					<input class="form-check-input" type="checkbox" role="switch" id="check_wrap" @bind="Wrap">
+					<label class="form-check-label" for="check_wrap">Wrap</label>
+				</div>
+
+				<hr />
+
+				<p>Texture</p>
+
+				<div class="input-group mb-1">
+					<div class="input-group-text">Texture Size</div>
+					<label for="texture_size" class="visually-hidden">Texture Size</label>
+					<input type="number" class="form-control" id="texture_size" @bind="TextureSize" />
+					<span class="input-group-text">px</span>
+				</div>
+				
+				<hr />
+
+				<div class="d-grid p-0">
+					<button class="btn btn-primary" type="button" @onclick="GenerateTexture">Generate</button>
+				</div>
+			</div>
+
+			
+		</section>
+	</div>
+
+	<div class="col-12 col-lg-8 mb-3">
+		<section class="card">
+			<div class="card-header">Result Image:</div>
+			
+			<div style="aspect-ratio: 1.0;">
+				<img id="texture" />
+			</div>
+		</section>
+	</div>
+</div>
+
+@code
+{
+	public int Seed { get; set; } = 420;
+	public int CellCount { get; set; } = 8;
+	public bool Wrap { get; set; } = false;
+	public PGAL.Noise.InterpolationFunction InterpolationFunction { get; set; } = PGAL.Noise.InterpolationFunction.Polynomial;
+
+	public int TextureSize { get; set; } = 128;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await JSHost.ImportAsync("Home", "../Pages/Home.razor.js");
+		GenerateTexture();
+	}
+
+	private void GenerateTexture()
+	{
+		PGAL.Noise.PerlinNoiseF noise = new(Seed, InterpolationFunction, (uint) CellCount, Wrap);
+		Rgba32[] textureData = new Rgba32[TextureSize * TextureSize];
+		for (int y = 0; y < TextureSize; y++)
+		{
+			for (int x = 0; x < TextureSize; x++)
+			{
+				var sx = CellCount * (float)x / TextureSize;
+				var sy = CellCount * (float)y / TextureSize;
+				byte v = (byte)(noise.At(sx, sy) * 255);
+				textureData[TextureSize * y + x] = new Rgba32(v, v, v);
+			}
+		}
+
+		Image<Rgba32> a = Image<Rgba32>.LoadPixelData(new ReadOnlySpan<Rgba32>(textureData), TextureSize, TextureSize);
+		MemoryStream ms = new();
+		a.SaveAsPng(ms);
+		byte[] pngBuffer = ms.ToArray();
+		LoadImage(pngBuffer);
+	}
+}
