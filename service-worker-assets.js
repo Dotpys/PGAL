@@ -33,11 +33,11 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-YeO6hK7lTPoGq98lgQHhBWh8HGh7bCerag5ntNF\/WjU=",
+      "hash": "sha256-QAAyVQfFn4A\/Au4GvqqzJ\/6q\/sxVDLI8INXUN9lg\/5M=",
       "url": "_framework\/blazor.boot.json"
     },
     {
-      "hash": "sha256-JjVInbY\/DU3PuttcvkumcqN1I1Xe9fe6r4+XDhMk4mU=",
+      "hash": "sha256-nDUtHKp\/MlNca4vf8JBi5lWyJ41NX9RDPuKKF3VegXI=",
       "url": "_framework\/Microsoft.AspNetCore.Components.wasm"
     },
     {
@@ -61,7 +61,7 @@
       "url": "_framework\/Microsoft.Extensions.Configuration.wasm"
     },
     {
-      "hash": "sha256-EkVDQCi2JTDCDM1ZjZcyrAoK7nE5E3KMJa9m8laSpZ8=",
+      "hash": "sha256-0oeVVlm0Mzg2nla1zhMM8JJRuImD28wt1o\/ohlBW9io=",
       "url": "_framework\/Microsoft.Extensions.DependencyInjection.Abstractions.wasm"
     },
     {
@@ -93,7 +93,7 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.wasm"
     },
     {
-      "hash": "sha256-vQfi9LkQQQXZ4Xw9YkwTTjyqnc6ik0o4yBq+3CWJ6V8=",
+      "hash": "sha256-sPFrVl5q9tuzewL3trwk\/HOFnFjs2OhzvNeLQzBzPNc=",
       "url": "_framework\/PerlinNoise.wasm"
     },
     {
@@ -101,12 +101,28 @@
       "url": "_framework\/SixLabors.ImageSharp.wasm"
     },
     {
-      "hash": "sha256-yr9dfgmK\/X9\/ZL9eKin9WDRIW10b5oIc9pdkOmv2HT8=",
+      "hash": "sha256-a5xlPl2Fx4YzyIUtuyNj\/Jln9DIBKdp1LakS87wK1so=",
       "url": "_framework\/System.Collections.Concurrent.wasm"
     },
     {
-      "hash": "sha256-E0PbbkfZW2\/L8k\/5uVxfRlQniqo81Mt3RK498JDF+Zw=",
+      "hash": "sha256-y6ZbcXWO2mFPnLiNRTBzMtI029oh4VkCsK8k+XMz+Zw=",
+      "url": "_framework\/System.Collections.NonGeneric.wasm"
+    },
+    {
+      "hash": "sha256-lU2drYlvNqrSf4oV6LZdTl0VziKCnJZg\/ch4Dyger6I=",
+      "url": "_framework\/System.Collections.Specialized.wasm"
+    },
+    {
+      "hash": "sha256-KtPIUkGMKkshFArxt+F1k8fpR7zOKh4MTJJf+qwojiI=",
       "url": "_framework\/System.Collections.wasm"
+    },
+    {
+      "hash": "sha256-\/qxbf3Tx4npCKVsJUWGt+YSgUxuTY+odpMyfjHt2eBE=",
+      "url": "_framework\/System.ComponentModel.Primitives.wasm"
+    },
+    {
+      "hash": "sha256-oPcsN2HZXT6VDM4tzPD8Vljld2\/YgkZGDwaHiXZtX0s=",
+      "url": "_framework\/System.ComponentModel.TypeConverter.wasm"
     },
     {
       "hash": "sha256-Kg+Te+dUBA6OiPS3uVj+Poyamhf9bMlcL96uc+bTYWc=",
@@ -133,11 +149,15 @@
       "url": "_framework\/System.Net.Primitives.wasm"
     },
     {
-      "hash": "sha256-MLZfK+\/\/ROYL2ZHbu1AldJamJmtyRCE8\/tYDmE46Keo=",
+      "hash": "sha256-lGaFTI4GIq1+E2+yhF9kUXquMQpVea91vp04\/bvMH8E=",
+      "url": "_framework\/System.ObjectModel.wasm"
+    },
+    {
+      "hash": "sha256-9nYhZnFtgnb7SnJ4Zv6cWnPr5QjOCDhTjg4P9beZX4w=",
       "url": "_framework\/System.Private.CoreLib.wasm"
     },
     {
-      "hash": "sha256-0nO0Rp6weeQYlqM5fvWTZa0wFE7v3cW5phjQ7qslsns=",
+      "hash": "sha256-14aKm3lei\/lwO\/Npk6v8ZS75JXW1figlOsy4ZJwb8ag=",
       "url": "_framework\/System.Private.Uri.wasm"
     },
     {
@@ -145,7 +165,7 @@
       "url": "_framework\/System.Runtime.InteropServices.JavaScript.wasm"
     },
     {
-      "hash": "sha256-jyOYp1A\/fS4M9+nXUXzk\/4a4mN\/42m3OwPSA43APIRU=",
+      "hash": "sha256-j526NkC1pKrg9mXxH5QKdF4TgWnNaYQ1YFAYBy1FBWU=",
       "url": "_framework\/System.Runtime.wasm"
     },
     {
@@ -157,7 +177,7 @@
       "url": "_framework\/System.Text.Encodings.Web.wasm"
     },
     {
-      "hash": "sha256-S6U0kcw4XEMXT1MWh4ccP+UytqWBtE1rOYP0M9umG3s=",
+      "hash": "sha256-GYAvCW0i3T81tRtDC5RsF1eP3fm2nfjmSxR5FmrUKEc=",
       "url": "_framework\/System.Text.Json.wasm"
     },
     {
@@ -165,7 +185,11 @@
       "url": "_framework\/System.Text.RegularExpressions.wasm"
     },
     {
-      "hash": "sha256-c5EPboNGH5g1GAU7pAvxIlptYZwXnBmLYRh93xovW+I=",
+      "hash": "sha256-42a4+5LjOVNJZ9qrtuq44hJuXPS03tHmXb7Kauk7pEg=",
+      "url": "_framework\/System.wasm"
+    },
+    {
+      "hash": "sha256-m64CbHdsEhJET4iDB97mf5VvJD+WgDIneb+qx074m0k=",
       "url": "_framework\/WebShowcase.wasm"
     },
     {
@@ -205,5 +229,5 @@
       "url": "manifest.webmanifest"
     }
   ],
-  "version": "0W9pzSNm"
+  "version": "urT014r0"
 };
