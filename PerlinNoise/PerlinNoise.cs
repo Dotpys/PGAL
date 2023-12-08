@@ -7,11 +7,17 @@ public class PerlinNoiseF
 	private float[,,] GradientMatrix { get; init; }
 	private Func<float, float> InterpolationFunction { get; init; }
 
-	public PerlinNoiseF(int seed, uint cellCount = 16, bool wrap = true)
+	public PerlinNoiseF(int seed, InterpolationFunction function = Noise.InterpolationFunction.Polynomial, uint cellCount = 16, bool wrap = true)
 	{
 		CellCount = cellCount;
 		GradientMatrix = new float[GridSize, GridSize, 2];
-		InterpolationFunction = Interpolation.FastPolynomial;
+		InterpolationFunction = function switch
+		{
+			Noise.InterpolationFunction.Linear => Interpolation.Linear,
+			Noise.InterpolationFunction.Cosine => Interpolation.Cosine,
+			Noise.InterpolationFunction.Polynomial => Interpolation.FastPolynomial,
+			_ => Interpolation.FastPolynomial
+		};
 		Random r = new(seed);
 		for (int y = 0; y < GridSize; y++)
 		{
@@ -76,4 +82,11 @@ public static class Interpolation
 	public static float Cosine(float x) => (1 - MathF.Cos(x * MathF.PI)) / 2;
 	public static float SlowPolynomial(float x) => (6 * x * x * x * x * x - 15 * x * x * x * x + 10 * x * x * x);
 	public static float FastPolynomial(float x) => (3 * x * x - 2 * x * x * x);
+}
+
+public enum InterpolationFunction
+{
+	Linear,
+	Cosine,
+	Polynomial
 }

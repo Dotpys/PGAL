@@ -29,6 +29,16 @@
 					<input type="number" class="form-control" id="input_cell_count" @bind="CellCount" />
 				</div>
 
+				<div class="input-group mb-1">
+					<div class="input-group-text">Interpolation</div>
+					<label for="select_interpolation_type" class="visually-hidden">Interpolation</label>
+					<select class="form-control" id="select_interpolation_type" @bind="InterpolationFunction">
+						<option value="@PGAL.Noise.InterpolationFunction.Cosine">Cosine</option>
+						<option value="@PGAL.Noise.InterpolationFunction.Linear">Linear</option>
+						<option value="@PGAL.Noise.InterpolationFunction.Polynomial">Polynomial</option>
+					</select>
+				</div>
+
 				<div class="form-check form-switch mb-1">
 					<input class="form-check-input" type="checkbox" role="switch" id="check_wrap" @bind="Wrap">
 					<label class="form-check-label" for="check_wrap">Wrap</label>
@@ -70,8 +80,9 @@
 @code
 {
 	public int Seed { get; set; } = 420;
-	public int CellCount { get; set; } = 16;
+	public int CellCount { get; set; } = 8;
 	public bool Wrap { get; set; } = false;
+	public PGAL.Noise.InterpolationFunction InterpolationFunction { get; set; } = PGAL.Noise.InterpolationFunction.Polynomial;
 
 	public int TextureSize { get; set; } = 128;
 
@@ -83,7 +94,7 @@
 
 	private void GenerateTexture()
 	{
-		PGAL.Noise.PerlinNoiseF noise = new(Seed, (uint) CellCount, Wrap);
+		PGAL.Noise.PerlinNoiseF noise = new(Seed, InterpolationFunction, (uint) CellCount, Wrap);
 		Rgba32[] textureData = new Rgba32[TextureSize * TextureSize];
 		for (int y = 0; y < TextureSize; y++)
 		{
