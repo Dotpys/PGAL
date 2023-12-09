@@ -2,6 +2,7 @@
 @using System.Runtime.InteropServices.JavaScript
 @using SixLabors.ImageSharp
 @using SixLabors.ImageSharp.PixelFormats
+@using System.Globalization
 
 <PageTitle>Perlin Noise</PageTitle>
 
@@ -70,8 +71,50 @@
 		<section class="card">
 			<div class="card-header">Result Image:</div>
 			
-			<div style="aspect-ratio: 1.0;">
+			<div class="card-body body-texture">
 				<img id="texture" />
+				<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+					@if (ShowGrid)
+					{
+						@for (float i = 1; i < CellCount; i++)
+						{
+							<line x1=@((i * GridSize).ToString(CultureInfo.InvariantCulture))
+								  y1="0"
+								  x2=@((i * GridSize).ToString(CultureInfo.InvariantCulture))
+								  y2="256" />
+
+							<line x1="0"
+								  y1=@((i * GridSize).ToString(CultureInfo.InvariantCulture))
+								  x2="256"
+								  y2=@((i * GridSize).ToString(CultureInfo.InvariantCulture)) />
+						}
+					}
+					@if (ShowVectors)
+					{
+						@for (int y = 0; y < CellCount+1; y++)
+						{
+							@for (int x = 0; x < CellCount+1; x++)
+							{
+								<line x1=@(((float)x * GridSize).ToString(CultureInfo.InvariantCulture))
+									  y1=@(((float)y * GridSize).ToString(CultureInfo.InvariantCulture))
+									  x2=@((((float)x + GradientMatrix[x, y, 0])*GridSize).ToString(CultureInfo.InvariantCulture))
+									  y2=@((((float)y + GradientMatrix[x, y, 1])*GridSize).ToString(CultureInfo.InvariantCulture)) />
+							}
+						}
+					}
+				</svg>
+			</div>
+			<div class="card-footer">
+				<div>
+					<div class="form-check form-switch">
+						<input class="form-check-input" type="checkbox" role="switch" id="check_show_grid" @bind="ShowGrid">
+						<label class="form-check-label" for="check_show_grid">Show Grid</label>
+					</div>
+					<div class="form-check form-switch">
+						<input class="form-check-input" type="checkbox" role="switch" id="check_show_vectors" @bind="ShowVectors">
+						<label class="form-check-label" for="check_show_vectors">Show Vectors</label>
+					</div>
+				</div>
 			</div>
 		</section>
 	</div>
@@ -81,10 +124,16 @@
 {
 	public int Seed { get; set; } = 420;
 	public int CellCount { get; set; } = 8;
-	public bool Wrap { get; set; } = false;
 	public PGAL.Noise.InterpolationFunction InterpolationFunction { get; set; } = PGAL.Noise.InterpolationFunction.Polynomial;
+	public bool Wrap { get; set; } = false;
 
 	public int TextureSize { get; set; } = 128;
+
+	public bool ShowGrid { get; set; } = true;
+	public bool ShowVectors { get; set; } = true;
+
+	private float GridSize => 256 / CellCount;
+	private float[,,] GradientMatrix { get; set; } = new float[9, 9, 2];
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -112,5 +161,20 @@
 		a.SaveAsPng(ms);
 		byte[] pngBuffer = ms.ToArray();
 		LoadImage(pngBuffer);
+		GenerateVectors();
+	}
+
+	private void GenerateVectors()
+	{
+		GradientMatrix = new float[CellCount + 1, CellCount + 1, 2];
+		Random r = new(Seed);
+		for (int y = 0; y < (CellCount + 1); y++)
+		{
+			for (int x = 0; x < (CellCount + 1); x++)
+			{
+				float angle = r.NextSingle() * 2 * MathF.PI;
+				(GradientMatrix[x, y, 0], GradientMatrix[x, y, 1]) = MathF.SinCos(angle);
+			}
+		}
 	}
 }
