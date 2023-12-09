@@ -1,5 +1,19 @@
 /* /Pages/Home.razor.rz.scp.css */
-img#texture[b-dkonhlsxwl] {
-	width: 100%;
-	border-radius: 0 0 4px 4px;
+.body-texture[b-dkonhlsxwl] {
+	padding: 0;
+	display: grid !important;
+}
+
+.body-texture > img#texture[b-dkonhlsxwl] {
+	width:100%;
+	aspect-ratio: 1.0;
+	grid-row: 1 / span 1;
+	grid-column: 1 / span 1;
+}
+
+.body-texture > svg[b-dkonhlsxwl] {
+	grid-row: 1 / span 1;
+	grid-column: 1 / span 1;
+	stroke-width: 1px;
+	stroke: rgba(44, 44, 52, .5);
 }
