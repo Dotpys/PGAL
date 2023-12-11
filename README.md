@@ -1,9 +1,13 @@
 # PGAL
 Procedural Generation Algorithm Library
 
-Currently Supported Algotihms:
+#### Demo Application: [PGAL Showcase](https://dotpys.github.io/PGAL/)
+
+## Currently Supported Algotihms:
 - Perlin Noise
 
-Currently Planned:
+## Currently worked on:
 - Simplex Noise
+
+## Currently Planned:
 - Voronoi Diagrams

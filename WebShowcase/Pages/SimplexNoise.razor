@@ -1,0 +1,95 @@
+﻿@page "/noise/simplex"
+@using System.Runtime.InteropServices.JavaScript
+@using SixLabors.ImageSharp
+@using SixLabors.ImageSharp.PixelFormats
+@using System.Globalization
+
+<PageTitle>Simplex Noise</PageTitle>
+
+<div class="row my-4">
+	<h1 class="text-center">Simplex Noise</h1>
+</div>
+
+<div class="row">
+	<div class="col-12 col-lg-4 mb-3">
+		<section class="card">
+			<div class="card-header">Configuration:</div>
+			<div class="card-body">
+
+				<p>Simplex Noise</p>
+
+				<div class="input-group mb-1">
+					<div class="input-group-text">Seed</div>
+					<label for="seed" class="visually-hidden">Seed</label>
+					<input type="number" class="form-control" id="seed" @bind="Seed" />
+				</div>
+
+				<hr />
+
+				<p>Texture</p>
+
+				<div class="input-group mb-1">
+					<div class="input-group-text">Texture Size</div>
+					<label for="texture_size" class="visually-hidden">Texture Size</label>
+					<input type="number" class="form-control" id="texture_size" @bind="TextureSize" />
+					<span class="input-group-text">px</span>
+				</div>
+
+				<hr />
+
+				<div class="d-grid p-0">
+					<button class="btn btn-primary" type="button" @onclick="GenerateTexture">Generate</button>
+				</div>
+			</div>
+
+
+		</section>
+	</div>
+
+	<div class="col-12 col-lg-8 mb-3">
+		<section class="card">
+			<div class="card-header">Result Image:</div>
+
+			<div class="card-body body-texture">
+				<img id="texture" />
+			</div>
+			<div class="card-footer">
+			</div>
+		</section>
+	</div>
+</div>
+
+@code
+{
+	public int Seed { get; set; } = 420;
+
+	public int TextureSize { get; set; } = 128;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await JSHost.ImportAsync("SimplexNoise", "../Pages/SimplexNoise.razor.js");
+		GenerateTexture();
+	}
+
+	private void GenerateTexture()
+	{
+		PGAL.Noise.SimplexNoiseF noise = new(Seed);
+		Rgba32[] textureData = new Rgba32[TextureSize * TextureSize];
+		for (int y = 0; y < TextureSize; y++)
+		{
+			for (int x = 0; x < TextureSize; x++)
+			{
+				var sx = 8 * (float)x / TextureSize;
+				var sy = 8 * (float)y / TextureSize;
+				byte v = (byte)((noise.At(sx, sy) * 0.5 + 0.5) * 255);
+				textureData[TextureSize * y + x] = new Rgba32(v, v, v);
+			}
+		}
+
+		Image<Rgba32> a = Image<Rgba32>.LoadPixelData(new ReadOnlySpan<Rgba32>(textureData), TextureSize, TextureSize);
+		MemoryStream ms = new();
+		a.SaveAsPng(ms);
+		byte[] pngBuffer = ms.ToArray();
+		LoadImage(pngBuffer);
+	}
+}
