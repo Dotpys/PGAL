@@ -17,6 +17,12 @@
 	stroke-width: 1px;
 	stroke: rgba(44, 44, 52, .5);
 }
+
+.arrow[b-dkonhlsxwl] {
+	stroke-linecap: round;
+	stroke-width: 0.75px;
+	stroke: var(--bs-primary);
+}
 /* /Pages/SimplexNoise.razor.rz.scp.css */
 .body-texture[b-ljpdtxa4c4] {
 	padding: 0;
