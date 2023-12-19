@@ -88,17 +88,18 @@
 								  x2="256"
 								  y2=@((i * GridSize).ToString(CultureInfo.InvariantCulture)) />
 						}
-					}
-					@if (ShowVectors)
-					{
-						@for (int y = 0; y < CellCount+1; y++)
+						@if (ShowVectors)
 						{
-							@for (int x = 0; x < CellCount+1; x++)
+							@for (int y = 0; y < CellCount+1; y++)
 							{
-								<line x1=@(((float)x * GridSize).ToString(CultureInfo.InvariantCulture))
-									  y1=@(((float)y * GridSize).ToString(CultureInfo.InvariantCulture))
-									  x2=@((((float)x + GradientMatrix[x, y, 0])*GridSize).ToString(CultureInfo.InvariantCulture))
-									  y2=@((((float)y + GradientMatrix[x, y, 1])*GridSize).ToString(CultureInfo.InvariantCulture)) />
+								@for (int x = 0; x < CellCount+1; x++)
+								{
+									<line class="arrow"
+										  x1=@(((float)x * GridSize).ToString(CultureInfo.InvariantCulture))
+										  y1=@(((float)y * GridSize).ToString(CultureInfo.InvariantCulture))
+										  x2=@((((float)x + GradientMatrix[x, y, 0]*0.75)*GridSize).ToString(CultureInfo.InvariantCulture))
+										  y2=@((((float)y + GradientMatrix[x, y, 1]*0.75)*GridSize).ToString(CultureInfo.InvariantCulture)) />
+								}
 							}
 						}
 					}
@@ -129,8 +130,8 @@
 
 	public int TextureSize { get; set; } = 128;
 
-	public bool ShowGrid { get; set; } = true;
-	public bool ShowVectors { get; set; } = true;
+	public bool ShowGrid { get; set; } = false;
+	public bool ShowVectors { get; set; } = false;
 
 	private float GridSize => 256 / CellCount;
 	private float[,,] GradientMatrix { get; set; } = new float[9, 9, 2];

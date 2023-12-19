@@ -16,3 +16,9 @@
 	stroke-width: 1px;
 	stroke: rgba(44, 44, 52, .5);
 }
+
+.arrow {
+	stroke-linecap: round;
+	stroke-width: 0.75px;
+	stroke: var(--bs-primary);
+}
