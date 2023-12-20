@@ -19,20 +19,17 @@
 				<p>Perlin Noise</p>
 
 				<div class="input-group mb-1">
-					<div class="input-group-text">Seed</div>
-					<label for="seed" class="visually-hidden">Seed</label>
+					<label for="seed" class="input-group-text">Seed</label>
 					<input type="number" class="form-control" id="seed" @bind="Seed" />
 				</div>
 
 				<div class="input-group mb-1">
-					<div class="input-group-text">Cell Count</div>
-					<label for="input_cell_count" class="visually-hidden">Cell Count</label>
+					<label for="input_cell_count" class="input-group-text">Cell Count</label>
 					<input type="number" class="form-control" id="input_cell_count" @bind="CellCount" />
 				</div>
 
 				<div class="input-group mb-1">
-					<div class="input-group-text">Interpolation</div>
-					<label for="select_interpolation_type" class="visually-hidden">Interpolation</label>
+					<label for="select_interpolation_type" class="input-group-text">Interpolation</label>
 					<select class="form-control" id="select_interpolation_type" @bind="InterpolationFunction">
 						<option value="@PGAL.Noise.InterpolationFunction.Cosine">Cosine</option>
 						<option value="@PGAL.Noise.InterpolationFunction.Linear">Linear</option>
@@ -50,8 +47,7 @@
 				<p>Texture</p>
 
 				<div class="input-group mb-1">
-					<div class="input-group-text">Texture Size</div>
-					<label for="texture_size" class="visually-hidden">Texture Size</label>
+					<label for="texture_size" class="input-group-text">Texture Size</label>
 					<input type="number" class="form-control" id="texture_size" @bind="TextureSize" />
 					<span class="input-group-text">px</span>
 				</div>
@@ -63,7 +59,6 @@
 				</div>
 			</div>
 
-			
 		</section>
 	</div>
 
@@ -112,7 +107,7 @@
 						<label class="form-check-label" for="check_show_grid">Show Grid</label>
 					</div>
 					<div class="form-check form-switch">
-						<input class="form-check-input" type="checkbox" role="switch" id="check_show_vectors" @bind="ShowVectors">
+						<input disabled="@(!ShowGrid)" class="form-check-input" type="checkbox" role="switch" id="check_show_vectors" @bind="ShowVectors">
 						<label class="form-check-label" for="check_show_vectors">Show Vectors</label>
 					</div>
 				</div>
@@ -144,7 +139,7 @@
 
 	private void GenerateTexture()
 	{
-		PGAL.Noise.PerlinNoiseF noise = new(Seed, InterpolationFunction, (uint) CellCount, Wrap);
+		PGAL.Noise.PerlinNoise2D noise = new(Seed, InterpolationFunction, (uint) CellCount, Wrap);
 		Rgba32[] textureData = new Rgba32[TextureSize * TextureSize];
 		for (int y = 0; y < TextureSize; y++)
 		{

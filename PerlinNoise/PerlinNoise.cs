@@ -1,13 +1,13 @@
 ﻿namespace PGAL.Noise;
 
-public class PerlinNoiseF
+public sealed class PerlinNoise2D
 {
 	private uint CellCount { get; init; }
-	private uint GridSize { get => CellCount + 1; }
+	private uint GridSize => CellCount + 1;
 	private float[,,] GradientMatrix { get; init; }
 	private Func<float, float> InterpolationFunction { get; init; }
 
-	public PerlinNoiseF(int seed, InterpolationFunction function = Noise.InterpolationFunction.Polynomial, uint cellCount = 16, bool wrap = true)
+	public PerlinNoise2D(int seed, InterpolationFunction function = Noise.InterpolationFunction.Polynomial, uint cellCount = 16, bool wrap = true)
 	{
 		CellCount = cellCount;
 		GradientMatrix = new float[GridSize, GridSize, 2];
