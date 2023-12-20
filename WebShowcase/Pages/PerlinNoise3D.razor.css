@@ -1,0 +1,11 @@
+﻿.body-texture {
+	padding: 0;
+	display: grid !important;
+}
+
+.body-texture > img#texture {
+	width: 100%;
+	aspect-ratio: 1.0;
+	grid-row: 1 / span 1;
+	grid-column: 1 / span 1;
+}

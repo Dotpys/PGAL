@@ -4,8 +4,8 @@ using System.Runtime.Versioning;
 namespace WebShowcase.Pages;
 
 [SupportedOSPlatform("browser")]
-public partial class Home
+public partial class PerlinNoise3D
 {
-	[JSImport("loadImage", "Home")]
-	internal static partial void LoadImage(byte[] data);
+	[JSImport("loadFrame", "PerlinNoise3D")]
+	internal static partial string LoadFrame(byte[] data);
 }

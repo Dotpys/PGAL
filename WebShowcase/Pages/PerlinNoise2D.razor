@@ -4,10 +4,10 @@
 @using SixLabors.ImageSharp.PixelFormats
 @using System.Globalization
 
-<PageTitle>Perlin Noise</PageTitle>
+<PageTitle>Perlin Noise 2D</PageTitle>
 
 <div class="row my-4">
-	<h1 class="text-center">Perlin Noise</h1>
+	<h1 class="text-center">Perlin Noise 2D</h1>
 </div>
 
 <div class="row">
@@ -26,15 +26,7 @@
 				<div class="input-group mb-1">
 					<label for="input_cell_count" class="input-group-text">Cell Count</label>
 					<input type="number" class="form-control" id="input_cell_count" @bind="CellCount" />
-				</div>
-
-				<div class="input-group mb-1">
-					<label for="select_interpolation_type" class="input-group-text">Interpolation</label>
-					<select class="form-control" id="select_interpolation_type" @bind="InterpolationFunction">
-						<option value="@PGAL.Noise.InterpolationFunction.Cosine">Cosine</option>
-						<option value="@PGAL.Noise.InterpolationFunction.Linear">Linear</option>
-						<option value="@PGAL.Noise.InterpolationFunction.Polynomial">Polynomial</option>
-					</select>
+					<span class="input-group-text">^2</span>
 				</div>
 
 				<div class="form-check form-switch mb-1">
@@ -120,7 +112,6 @@
 {
 	public int Seed { get; set; } = 420;
 	public int CellCount { get; set; } = 8;
-	public PGAL.Noise.InterpolationFunction InterpolationFunction { get; set; } = PGAL.Noise.InterpolationFunction.Polynomial;
 	public bool Wrap { get; set; } = false;
 
 	public int TextureSize { get; set; } = 128;
@@ -133,13 +124,13 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		await JSHost.ImportAsync("Home", "../Pages/Home.razor.js");
+		await JSHost.ImportAsync("PerlinNoise2D", "../Pages/PerlinNoise2D.razor.js");
 		GenerateTexture();
 	}
 
 	private void GenerateTexture()
 	{
-		PGAL.Noise.PerlinNoise2D noise = new(Seed, InterpolationFunction, (uint) CellCount, Wrap);
+		PGAL.Noise.PerlinNoise2D noise = new(Seed, (uint) CellCount, Wrap);
 		Rgba32[] textureData = new Rgba32[TextureSize * TextureSize];
 		for (int y = 0; y < TextureSize; y++)
 		{
@@ -170,6 +161,21 @@
 			{
 				float angle = r.NextSingle() * 2 * MathF.PI;
 				(GradientMatrix[x, y, 0], GradientMatrix[x, y, 1]) = MathF.SinCos(angle);
+			}
+		}
+		if (Wrap)
+		{
+			// Right Side = Left Side
+			for (int y = 0; y <= CellCount; y++)
+			{
+				GradientMatrix[CellCount, y, 0] = GradientMatrix[0, y, 0];
+				GradientMatrix[CellCount, y, 1] = GradientMatrix[0, y, 1];
+			}
+			// Bottom Side = Top Side
+			for (int x = 0; x <= CellCount; x++)
+			{
+				GradientMatrix[x, CellCount, 0] = GradientMatrix[x, 0, 0];
+				GradientMatrix[x, CellCount, 1] = GradientMatrix[x, 0, 1];
 			}
 		}
 	}
