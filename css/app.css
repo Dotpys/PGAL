@@ -9,15 +9,35 @@
     --bs-tertiary-bg: #2C2C34 !important;
 }
 
+.card-body hr {
+    position: relative;
+    left: -1rem;
+    width: calc(100% + 2rem);
+}
+
 .btn {
     background-color: var(--bs-primary) !important;
     border-color: var(--bs-primary) !important;
 }
 
+.input-group-text {
+    background-color: rgba(255, 255, 255, .03) !important;
+    border-color: rgba(255,255,255,.15) !important;
+}
+
+.form-control {
+    border-color: rgba(255,255,255,.15) !important;
+}
 
 .form-control:focus {
     border-color: var(--bs-primary) !important;
     box-shadow: 0 0 0.25rem rgba(var(--bs-primary-rgb),.75) !important;
+}
+
+.form-check-input:focus {
+    border-color: var(--bs-primary) !important;
+    box-shadow: 0 0 0.25rem rgba(var(--bs-primary-rgb),.75) !important;
+    --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffcfac'/%3e%3c/svg%3e") !important;
 }
 
 .form-check-input:checked {
