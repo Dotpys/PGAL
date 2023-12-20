@@ -2,30 +2,42 @@
 a svg[b-6xmr3ymg44] {
 	fill: white;
 }
-/* /Pages/Home.razor.rz.scp.css */
-.body-texture[b-dkonhlsxwl] {
+/* /Pages/PerlinNoise2D.razor.rz.scp.css */
+.body-texture[b-5rp2m40qau] {
 	padding: 0;
 	display: grid !important;
 }
 
-.body-texture > img#texture[b-dkonhlsxwl] {
+.body-texture > img#texture[b-5rp2m40qau] {
 	width:100%;
 	aspect-ratio: 1.0;
 	grid-row: 1 / span 1;
 	grid-column: 1 / span 1;
 }
 
-.body-texture > svg[b-dkonhlsxwl] {
+.body-texture > svg[b-5rp2m40qau] {
 	grid-row: 1 / span 1;
 	grid-column: 1 / span 1;
 	stroke-width: 1px;
 	stroke: rgba(44, 44, 52, .5);
 }
 
-.arrow[b-dkonhlsxwl] {
+.arrow[b-5rp2m40qau] {
 	stroke-linecap: round;
 	stroke-width: 0.75px;
 	stroke: var(--bs-primary);
+}
+/* /Pages/PerlinNoise3D.razor.rz.scp.css */
+.body-texture[b-ovjj51x463] {
+	padding: 0;
+	display: grid !important;
+}
+
+.body-texture > img#texture[b-ovjj51x463] {
+	width: 100%;
+	aspect-ratio: 1.0;
+	grid-row: 1 / span 1;
+	grid-column: 1 / span 1;
 }
 /* /Pages/SimplexNoise.razor.rz.scp.css */
 .body-texture[b-ljpdtxa4c4] {
