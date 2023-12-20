@@ -63,7 +63,7 @@
 			<div class="card-footer">
 				<div>
 					<label for="customRange1" class="form-label">Frame: @(FrameZ)</label>
-					<input type="range" class="form-range" id="customRange1" min="0" max="@(TextureSize-1)" @bind="FrameZ" />
+					<input type="range" class="form-range" id="customRange1" min="0" max="@(TextureSize-1)" @bind="FrameZ" @bind:event="oninput" />
 				</div>
 			</div>
 		</section>
