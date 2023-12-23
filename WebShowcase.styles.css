@@ -58,3 +58,29 @@ a svg[b-6xmr3ymg44] {
 	stroke-width: 1px;
 	stroke: rgba(44, 44, 52, .5);
 }
+/* /Pages/VoronoiDiagram.razor.rz.scp.css */
+:has(svg)[b-dc7r0xr2fu] {
+	padding: 0;
+}
+
+svg .site[b-dc7r0xr2fu] {
+	fill: var(--bs-primary);
+}
+
+svg .sweep-line[b-dc7r0xr2fu] {
+	stroke: white;
+	stroke-width: 0.75px;
+}
+
+svg .beach-line[b-dc7r0xr2fu] {
+	fill: none;
+	stroke: rgba(244, 96, 54, 255);
+	stroke-width: 0.75px;
+	stroke-linecap: round;
+}
+
+svg .parabola[b-dc7r0xr2fu] {
+	fill: none;
+	stroke: rgba(255, 255, 255, .15);
+	stroke-width: 0.75px;
+}
