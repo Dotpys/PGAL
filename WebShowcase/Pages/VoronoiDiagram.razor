@@ -1,0 +1,212 @@
+﻿@page "/voronoi"
+@using System.Globalization
+@using System.Numerics
+@using System.Text
+
+<PageTitle>Voronoi Diagram</PageTitle>
+
+<div class="row my-4">
+	<h1 class="text-center">Voronoi Diagram</h1>
+</div>
+
+<div class="row">
+	<div class="col-12 col-lg-4 mb-3">
+		<section class="card">
+			<div class="card-header">Configuration:</div>
+			<div class="card-body">
+
+				<p>Voronoi Diagram</p>
+
+				<div class="input-group mb-1">
+					<label for="seed" class="input-group-text">Seed</label>
+					<input type="number" class="form-control" id="seed" @bind="Seed" />
+				</div>
+
+				<div class="input-group mb-1">
+					<label for="input_site_count" class="input-group-text">Site Count</label>
+					<input type="number" class="form-control" id="input_site_count" @bind="SiteCount" />
+				</div>
+
+				<hr />
+
+				<div class="d-grid p-0">
+					<button class="btn btn-primary" type="button" onclick="@(() => @GenerateSites())">Generate</button>
+				</div>
+			</div>
+
+		</section>
+	</div>
+
+	<div class="col-12 col-lg-8 mb-3">
+
+		<section class="card">
+			<div class="card-header">Result Image:</div>
+
+			<div class="card-body">
+				<svg viewBox="0 0 100 100">
+					<!--Sites-->
+					@foreach (var site in sites)
+					{
+						<circle class="site"
+							cx="@site.X.ToString(CultureInfo.InvariantCulture)"
+							cy="@site.Y.ToString(CultureInfo.InvariantCulture)"
+							r="1.5" />
+					}
+
+					<!--Sweep Line-->
+					<line class="sweep-line"
+						x1="0"
+						x2="@MAX_SIZE"
+						y1="@SweepProgress"
+						y2="@SweepProgress"/>
+
+					@foreach(var site in sites.Where(s => s.Y < SweepProgress))
+					{
+						<path class="parabola" d="@GenerateParabolaPathData(new(site, SweepProgress))"/>
+					}
+
+					<!--BeachLine-->
+					<path class="beach-line" d="@GenerateBeachLinePathData()"/>
+				</svg>
+			</div>
+			<div class="card-footer">
+				<div>
+					<label for="customRange1" class="form-label">Sweep progress: @(SweepProgress)%</label>
+					<input type="range" class="form-range" id="customRange1" min="0" max="@MAX_SIZE" @bind="SweepProgress" @bind:event="oninput" />
+				</div>
+			</div>
+		</section>
+
+	</div>
+</div>
+
+@code {
+	private const float MAX_SIZE = 100f;
+	private const int DEFAULT_SITE_COUNT = 1;
+
+	public int Seed { get; set; } = 428;
+	public int SiteCount { get; set; } = DEFAULT_SITE_COUNT;
+	public int SweepProgress { get; set; } = 0;
+
+	private Vector2[] sites = new Vector2[DEFAULT_SITE_COUNT];
+	private PriorityQueue<VoronoiEvent, float> eventQueue = new();
+	private List<Vector2> beachLine = new();
+
+	protected override void OnInitialized()
+	{
+		GenerateSites();
+	}
+
+	private void GenerateSites()
+	{
+		sites = new Vector2[SiteCount];
+		Random r = new Random(Seed);
+		foreach (int i in Enumerable.Range(0, SiteCount))
+		{
+			float x = r.NextSingle() * MAX_SIZE;
+			float y = r.NextSingle() * MAX_SIZE;
+			sites[i] = new(x, y);
+			eventQueue.Enqueue(new VoronoiSiteEvent(i), y);
+		}
+		StateHasChanged();
+	}
+
+	private string GenerateBeachLinePathData()
+	{
+		// Per ogni sito...
+		var parabolas = sites
+		// ...sopra la sweep line...
+		.Where(site => site.Y < SweepProgress)
+		// ...genero una parabola.
+		.Select(site => new Parabola(site, SweepProgress));
+
+		// Per ogni valore da 0..100
+		var plot = Enumerable.Range(0, (int)MAX_SIZE + 1)
+		.Select(x => (
+			x: (float)x,
+			// Calcola il la parabola con valore massimo
+			y: parabolas
+				.Select(p => p.Y(x))
+				.DefaultIfEmpty(0)
+				.Max()
+		)).ToArray();
+
+		StringBuilder sb = new($"M0,{plot[0].Item2.ToString(CultureInfo.InvariantCulture)}");
+		foreach(var plotpoint in plot.Skip(1))
+		{
+			sb.Append($"L{plotpoint.x.ToString(CultureInfo.InvariantCulture)},{plotpoint.y.ToString(CultureInfo.InvariantCulture)}");
+		}
+		return sb.ToString();
+	}
+
+	private string GenerateParabolaPathData(Parabola p)
+	{
+		var (a, b, c) = (p.A, p.B, p.C);
+		float delta = MathF.Sqrt(b * b - 4 * a * c);
+		float x1 = (-b - delta) / (2 * a);
+		(float x2, float y2) = (-b / (2 * a), 2 * p.Y(-b / (2 * a)));
+		float x3 = (-b + delta) / (2 * a);
+
+		StringBuilder sb = new();
+
+		sb.Append($"M {x1.ToString(CultureInfo.InvariantCulture)},0");
+		sb.Append($"Q {x2.ToString(CultureInfo.InvariantCulture)},{y2.ToString(CultureInfo.InvariantCulture)}");
+		sb.Append($" {x3.ToString(CultureInfo.InvariantCulture)},0");
+
+		return sb.ToString();
+	}
+
+	struct Parabola
+	{
+		public float A { get; init; }
+		public float B { get; init; }
+		public float C { get; init; }
+
+		public Parabola(float a, float b, float c)
+		{
+			A = a;
+			B = b;
+			C = c;
+		}
+
+		public Parabola(Vector2 focus, float directrix)
+		{
+			A = 1 / (2 * (focus.Y - directrix));
+			B = - 2 * focus.X * A;
+			C = (focus.X * focus.X + focus.Y * focus.Y - directrix * directrix) * A;
+		}
+
+		public float Y(float x) => A * x * x + B * x + C;
+	}
+
+	abstract class VoronoiEvent { }
+
+	sealed class VoronoiSiteEvent(int SiteIndex) : VoronoiEvent { }
+
+	sealed class VoronoiVertexEvent(int Site1, int Site2, int Site3) : VoronoiEvent { }
+
+	private void GenerateDiagram(Vector2[] sites)
+	{
+		PriorityQueue<VoronoiEvent, float> eventQueue = new();
+		List<Vector2> beachLine = new();
+
+		// Fill event queue with Site Events
+		for(int i=0; i<sites.Length; i++)
+		{
+			eventQueue.Enqueue(new VoronoiSiteEvent(i), sites[i].Y);
+		}
+
+		while (eventQueue.TryDequeue(out VoronoiEvent e, out float y))
+		{
+			if (e is VoronoiSiteEvent)
+			{
+				// Handle Site events
+
+			}
+			if (e is VoronoiVertexEvent)
+			{
+				// Handle Vertex events
+			}
+		}
+	}
+}

@@ -1,0 +1,25 @@
+﻿:has(svg) {
+	padding: 0;
+}
+
+svg .site {
+	fill: var(--bs-primary);
+}
+
+svg .sweep-line {
+	stroke: white;
+	stroke-width: 0.75px;
+}
+
+svg .beach-line {
+	fill: none;
+	stroke: rgba(244, 96, 54, 255);
+	stroke-width: 0.75px;
+	stroke-linecap: round;
+}
+
+svg .parabola {
+	fill: none;
+	stroke: rgba(255, 255, 255, .15);
+	stroke-width: 0.75px;
+}
