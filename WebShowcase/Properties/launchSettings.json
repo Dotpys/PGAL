@@ -28,7 +28,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "launchUrl": "voronoi"
+      "launchUrl": ""
     },
     "IIS Express": {
       "commandName": "IISExpress",

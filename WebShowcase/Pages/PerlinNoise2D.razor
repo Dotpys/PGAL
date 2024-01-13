@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/noise/perlin/2d"
 @using System.Runtime.InteropServices.JavaScript
 @using SixLabors.ImageSharp
 @using SixLabors.ImageSharp.PixelFormats
@@ -6,107 +6,90 @@
 
 <PageTitle>Perlin Noise 2D</PageTitle>
 
-<div class="row my-4">
-	<h1 class="text-center">Perlin Noise 2D</h1>
-</div>
+<h1>Perlin Noise 2D</h1>
 
-<div class="row">
-	<div class="col-12 col-lg-4 mb-3">
-		<section class="card">
-			<div class="card-header">Configuration:</div>
-			<div class="card-body">
+<main>
+	<section id="configuration">
+		<h2>Configuration</h2>
 
-				<p>Perlin Noise</p>
+		<h3>Perlin Noise</h3>
+		<form id="seed">
+			<label for="input-seed">Seed</label>
+			<input  id="input-seed" type="number" @bind="Seed" />
+		</form>
+		<form id="cellCount">
+			<label for="input-cellCount">Cell Count</label>
+			<input  id="input-cellCount" type="number" @bind="CellCount" />
+			<label for="input-cellCount">^2</label>
+		</form>
+		<form id="wrap">
+			<label for="input-wrap">Wrap</label>
+			<input  id="input-wrap" type="checkbox" @bind="Wrap" />
+		</form>
 
-				<div class="input-group mb-1">
-					<label for="seed" class="input-group-text">Seed</label>
-					<input type="number" class="form-control" id="seed" @bind="Seed" />
-				</div>
+		<hr />
 
-				<div class="input-group mb-1">
-					<label for="input_cell_count" class="input-group-text">Cell Count</label>
-					<input type="number" class="form-control" id="input_cell_count" @bind="CellCount" />
-					<span class="input-group-text">^2</span>
-				</div>
+		<h3>Texture</h3>
+		<form id="textureSize">
+			<label for="input-textureSize">Texture Size</label>
+			<input  id="input-textureSize" type="number" @bind="TextureSize" />
+			<label for="input-textureSize">px</label>
+		</form>
 
-				<div class="form-check form-switch mb-1">
-					<input class="form-check-input" type="checkbox" role="switch" id="check_wrap" @bind="Wrap">
-					<label class="form-check-label" for="check_wrap">Wrap</label>
-				</div>
+		<button type="button" @onclick="GenerateTexture">Generate</button>
+	</section>
 
-				<hr />
-
-				<p>Texture</p>
-
-				<div class="input-group mb-1">
-					<label for="texture_size" class="input-group-text">Texture Size</label>
-					<input type="number" class="form-control" id="texture_size" @bind="TextureSize" />
-					<span class="input-group-text">px</span>
-				</div>
-				
-				<hr />
-
-				<div class="d-grid p-0">
-					<button class="btn btn-primary" type="button" @onclick="GenerateTexture">Generate</button>
-				</div>
-			</div>
-
-		</section>
-	</div>
-
-	<div class="col-12 col-lg-8 mb-3">
-		<section class="card">
-			<div class="card-header">Result Image:</div>
+	<section id="result">
+		<h2>Result Image</h2>
 			
-			<div class="card-body body-texture">
-				<img id="texture" />
-				<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
-					@if (ShowGrid)
+		<div>
+			<img id="texture" alt="generated noise" />
+			<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+				@if (ShowGrid)
+				{
+					@for (float i = 1; i < CellCount; i++)
 					{
-						@for (float i = 1; i < CellCount; i++)
-						{
-							<line x1=@((i * GridSize).ToString(CultureInfo.InvariantCulture))
-								  y1="0"
-								  x2=@((i * GridSize).ToString(CultureInfo.InvariantCulture))
-								  y2="256" />
+						<line x1=@((i * GridSize).ToString(CultureInfo.InvariantCulture))
+								y1="0"
+								x2=@((i * GridSize).ToString(CultureInfo.InvariantCulture))
+								y2="256" />
 
-							<line x1="0"
-								  y1=@((i * GridSize).ToString(CultureInfo.InvariantCulture))
-								  x2="256"
-								  y2=@((i * GridSize).ToString(CultureInfo.InvariantCulture)) />
-						}
-						@if (ShowVectors)
+						<line x1="0"
+								y1=@((i * GridSize).ToString(CultureInfo.InvariantCulture))
+								x2="256"
+								y2=@((i * GridSize).ToString(CultureInfo.InvariantCulture)) />
+					}
+					@if (ShowVectors)
+					{
+						@for (int y = 0; y < CellCount+1; y++)
 						{
-							@for (int y = 0; y < CellCount+1; y++)
+							@for (int x = 0; x < CellCount+1; x++)
 							{
-								@for (int x = 0; x < CellCount+1; x++)
-								{
-									<line class="arrow"
-										  x1=@(((float)x * GridSize).ToString(CultureInfo.InvariantCulture))
-										  y1=@(((float)y * GridSize).ToString(CultureInfo.InvariantCulture))
-										  x2=@((((float)x + GradientMatrix[x, y, 0]*0.75)*GridSize).ToString(CultureInfo.InvariantCulture))
-										  y2=@((((float)y + GradientMatrix[x, y, 1]*0.75)*GridSize).ToString(CultureInfo.InvariantCulture)) />
-								}
+								<line class="arrow"
+										x1=@(((float)x * GridSize).ToString(CultureInfo.InvariantCulture))
+										y1=@(((float)y * GridSize).ToString(CultureInfo.InvariantCulture))
+										x2=@((((float)x + GradientMatrix[x, y, 0]*0.75)*GridSize).ToString(CultureInfo.InvariantCulture))
+										y2=@((((float)y + GradientMatrix[x, y, 1]*0.75)*GridSize).ToString(CultureInfo.InvariantCulture)) />
 							}
 						}
 					}
-				</svg>
-			</div>
-			<div class="card-footer">
-				<div>
-					<div class="form-check form-switch">
-						<input class="form-check-input" type="checkbox" role="switch" id="check_show_grid" @bind="ShowGrid">
-						<label class="form-check-label" for="check_show_grid">Show Grid</label>
-					</div>
-					<div class="form-check form-switch">
-						<input disabled="@(!ShowGrid)" class="form-check-input" type="checkbox" role="switch" id="check_show_vectors" @bind="ShowVectors">
-						<label class="form-check-label" for="check_show_vectors">Show Vectors</label>
-					</div>
-				</div>
-			</div>
-		</section>
-	</div>
-</div>
+				}
+			</svg>
+		</div>
+		
+		<hr />
+
+		<h3>Overlay</h3>
+		<form id="showGrid">
+			<label for="input-showGrid">Show Grid</label>
+			<input  id="input-showGrid" type="checkbox" @bind="ShowGrid" />
+		</form>
+		<form id="showVectors">
+			<label for="input-showVectors">Show Vectors</label>
+			<input  id="input-showVectors" type="checkbox" @bind="ShowVectors" disabled="@(!ShowGrid)" />
+		</form>
+	</section>
+</main>
 
 @code
 {
@@ -119,6 +102,7 @@
 	public bool ShowGrid { get; set; } = false;
 	public bool ShowVectors { get; set; } = false;
 
+	//TODO: Valori di ritorno vaghi, indagare sul cosa ho fatto.
 	private float GridSize => 256 / CellCount;
 	private float[,,] GradientMatrix { get; set; } = new float[9, 9, 2];
 

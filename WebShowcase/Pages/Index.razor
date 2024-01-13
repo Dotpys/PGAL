@@ -1,0 +1,44 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+
+<h1>Index</h1>
+
+<main>
+	<section id="sect-perlin">
+		<h2>Demo toggles</h2>
+		<h3>Demo</h3>
+		<form>
+			<label>Unchecked</label>
+			<input type="checkbox" />
+		</form>
+		<form>
+			<label>Checked</label>
+			<input type="checkbox" checked/>
+		</form>
+		<form>
+			<label>Disabled</label>
+			<input type="checkbox" disabled/>
+		</form>
+		<form id="indeterminate">
+			<label>Indeterminate</label>
+			<input type="checkbox" />
+		</form>
+	</section>
+
+	<section id="sect-simplex">
+		<h2>Simplex Noise</h2>
+	</section>
+
+	<section id="sect-voronoi">
+		<h2>Voronoi Diagram</h2>
+	</section>
+</main>
+
+@code
+{
+	protected override void OnInitialized()
+	{
+		
+	}
+}

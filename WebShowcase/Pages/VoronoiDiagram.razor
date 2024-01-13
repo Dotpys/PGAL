@@ -5,88 +5,74 @@
 
 <PageTitle>Voronoi Diagram</PageTitle>
 
-<div class="row my-4">
-	<h1 class="text-center">Voronoi Diagram</h1>
-</div>
+<h1>Voronoi Diagram</h1>
 
-<div class="row">
-	<div class="col-12 col-lg-4 mb-3">
-		<section class="card">
-			<div class="card-header">Configuration:</div>
-			<div class="card-body">
+<main>
+	<section id="configuration">
+		<h2>Configuration</h2>
 
-				<p>Voronoi Diagram</p>
+		<h3>Voronoi Diagram</h3>
 
-				<div class="input-group mb-1">
-					<label for="seed" class="input-group-text">Seed</label>
-					<input type="number" class="form-control" id="seed" @bind="Seed" />
-				</div>
+		<form>
+			<label for="seed">Seed</label>
+			<input type="number" id="seed" @bind="Seed" />
+		</form>
 
-				<div class="input-group mb-1">
-					<label for="input_site_count" class="input-group-text">Site Count</label>
-					<input type="number" class="form-control" id="input_site_count" @bind="SiteCount" />
-				</div>
+		<form>
+			<label for="input_site_count">Site Count</label>
+			<input type="number" id="input_site_count" @bind="SiteCount" />
+		</form>
 
-				<hr />
+		<button type="button" onclick="@(() => @GenerateSites())">Generate</button>
+	</section>
 
-				<div class="d-grid p-0">
-					<button class="btn btn-primary" type="button" onclick="@(() => @GenerateSites())">Generate</button>
-				</div>
-			</div>
+	<section id="result">
+		<h2>Result Image</h2>
 
-		</section>
-	</div>
+		<svg viewBox="0 0 100 100">
+			<!--Sites-->
+			@foreach (var site in sites)
+			{
+				<circle class="site"
+					cx="@site.X.ToString(CultureInfo.InvariantCulture)"
+					cy="@site.Y.ToString(CultureInfo.InvariantCulture)"
+					r="1.5" />
+			}
 
-	<div class="col-12 col-lg-8 mb-3">
+			<!--Sweep Line-->
+			<line class="sweep-line"
+				x1="0"
+				x2="@MAX_SIZE"
+				y1="@SweepProgress"
+				y2="@SweepProgress"/>
 
-		<section class="card">
-			<div class="card-header">Result Image:</div>
+			@foreach(var site in sites.Where(s => s.Y < SweepProgress))
+			{
+				<path class="parabola" d="@GenerateParabolaPathData(new(site, SweepProgress))"/>
+			}
 
-			<div class="card-body">
-				<svg viewBox="0 0 100 100">
-					<!--Sites-->
-					@foreach (var site in sites)
-					{
-						<circle class="site"
-							cx="@site.X.ToString(CultureInfo.InvariantCulture)"
-							cy="@site.Y.ToString(CultureInfo.InvariantCulture)"
-							r="1.5" />
-					}
+			<!--BeachLine-->
+			<path class="beach-line" d="@GenerateBeachLinePathData()"/>
+		</svg>
 
-					<!--Sweep Line-->
-					<line class="sweep-line"
-						x1="0"
-						x2="@MAX_SIZE"
-						y1="@SweepProgress"
-						y2="@SweepProgress"/>
+		<hr/>
 
-					@foreach(var site in sites.Where(s => s.Y < SweepProgress))
-					{
-						<path class="parabola" d="@GenerateParabolaPathData(new(site, SweepProgress))"/>
-					}
+		<h3>Controls</h3>
 
-					<!--BeachLine-->
-					<path class="beach-line" d="@GenerateBeachLinePathData()"/>
-				</svg>
-			</div>
-			<div class="card-footer">
-				<div>
-					<label for="customRange1" class="form-label">Sweep progress: @(SweepProgress)%</label>
-					<input type="range" class="form-range" id="customRange1" min="0" max="@MAX_SIZE" @bind="SweepProgress" @bind:event="oninput" />
-				</div>
-			</div>
-		</section>
-
-	</div>
-</div>
+		<form>
+			<label for="customRange1">Sweep progress: @(SweepProgress)%</label>
+			<input type="range" id="customRange1" min="0" max="@MAX_SIZE" @bind="SweepProgress" @bind:event="oninput" />
+		</form>
+	</section>
+</main>
 
 @code {
 	private const float MAX_SIZE = 100f;
-	private const int DEFAULT_SITE_COUNT = 1;
+	private const int DEFAULT_SITE_COUNT = 5;
 
 	public int Seed { get; set; } = 428;
 	public int SiteCount { get; set; } = DEFAULT_SITE_COUNT;
-	public int SweepProgress { get; set; } = 0;
+	public int SweepProgress { get; set; } = 75;
 
 	private Vector2[] sites = new Vector2[DEFAULT_SITE_COUNT];
 	private PriorityQueue<VoronoiEvent, float> eventQueue = new();
@@ -131,10 +117,11 @@
 				.Max()
 		)).ToArray();
 
-		StringBuilder sb = new($"M0,{plot[0].Item2.ToString(CultureInfo.InvariantCulture)}");
+		StringBuilder sb = new();
+		sb.AppendFormat(CultureInfo.InvariantCulture, "M0,{0}", plot[0].Item2);
 		foreach(var plotpoint in plot.Skip(1))
 		{
-			sb.Append($"L{plotpoint.x.ToString(CultureInfo.InvariantCulture)},{plotpoint.y.ToString(CultureInfo.InvariantCulture)}");
+			sb.AppendFormat(CultureInfo.InvariantCulture, "L{0},{1}", plotpoint.x, plotpoint.y);
 		}
 		return sb.ToString();
 	}
@@ -148,10 +135,8 @@
 		float x3 = (-b + delta) / (2 * a);
 
 		StringBuilder sb = new();
-
-		sb.Append($"M {x1.ToString(CultureInfo.InvariantCulture)},0");
-		sb.Append($"Q {x2.ToString(CultureInfo.InvariantCulture)},{y2.ToString(CultureInfo.InvariantCulture)}");
-		sb.Append($" {x3.ToString(CultureInfo.InvariantCulture)},0");
+		sb.AppendFormat(CultureInfo.InvariantCulture, "M {0},0", x1);
+		sb.AppendFormat(CultureInfo.InvariantCulture, "Q {0},{1},{2},{3}", x2, y2, x3, 0);
 
 		return sb.ToString();
 	}
@@ -188,7 +173,7 @@
 	private void GenerateDiagram(Vector2[] sites)
 	{
 		PriorityQueue<VoronoiEvent, float> eventQueue = new();
-		List<Vector2> beachLine = new();
+		List<int> beachLine = new();
 
 		// Fill event queue with Site Events
 		for(int i=0; i<sites.Length; i++)
@@ -198,15 +183,63 @@
 
 		while (eventQueue.TryDequeue(out VoronoiEvent e, out float y))
 		{
+			// TODO: Deleted Events?
 			if (e is VoronoiSiteEvent)
 			{
-				// Handle Site events
-
+				var siteEvent = (VoronoiSiteEvent)e;
+				// Insert Parabola
+				// if root != null; root = new parabola(e.site)
+				// if root.isLeaf() && root.site.y - p.y < 1)
+				{
+				}
 			}
-			if (e is VoronoiVertexEvent)
+			else
 			{
-				// Handle Vertex events
+				// Remove Parabola
 			}
 		}
+	}
+
+	struct Circle
+	{
+		public Vector2 Center { get; init; }
+		public float Radius { get; init; }
+	}
+
+	private bool TryGetCircleByPoints(Vector2 p1, Vector2 p2, Vector2 p3, out Circle circle)
+	{
+		// Eliminazione gaussiana.
+		float[] m =
+		[
+			2*p1.X, 2*p1.Y, 1, -(p1.X * p1.X + p1.Y * p1.Y),
+			2*p2.X, 2*p2.Y, 1, -(p2.X * p2.X + p2.Y * p2.Y),
+			2*p3.X, 2*p3.Y, 1, -(p3.X * p3.X + p3.Y * p3.Y),
+		];
+		float n = 0;
+		// Portiamo in forma triangolare
+		// L2 -> L2 - L1 * (L2_0/L1_0)
+		n = m[4] / m[0];
+		for (int i = 0; i<4; i++) m[4 + i] -= m[0 + i] * n;
+
+		// L3 -> L3 - L1 * (L3_0/L1_0)
+		n = m[8] / m[0];
+		for (int i = 0; i<4; i++) m[8 + i] -= m[0 + i] * n;
+
+		// L3 -> L3 - L2 * (L3_1/L2_1)
+		n = m[9] / m[5];
+		for (int i = 0; i<4; i++) m[8 + i] -= m[4 + i] * n;
+		// Ci fermiamo alla eliminazione di Gauss invece di proseguire con la eliminazione di Gauss-Jordan
+		var c = m[11] / m[10];
+		var b = (m[7] - m[6] * c) / m[5];
+		var a = (m[3] - m[1] * b - m[2] * c) / m[0];
+
+		// TODO: Check for edge cases (colinear points)
+
+		circle = new Circle()
+			{
+				Center = new Vector2(-a, -b),
+				Radius = MathF.Sqrt(-a * -a + -b * -b - c)
+			};
+		return true;
 	}
 }

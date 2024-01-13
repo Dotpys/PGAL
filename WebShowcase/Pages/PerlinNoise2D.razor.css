@@ -1,24 +1,35 @@
-﻿.body-texture {
-	padding: 0;
-	display: grid !important;
+﻿section#configuration {
+	flex-basis: 200px;
+	flex-grow: 1;
 }
 
-.body-texture > img#texture {
-	width:100%;
-	aspect-ratio: 1.0;
-	grid-row: 1 / span 1;
-	grid-column: 1 / span 1;
-}
+section#result {
+	flex-basis: 60%;
+	flex-grow: 2;
+	flex-shrink: 1;
 
-.body-texture > svg {
-	grid-row: 1 / span 1;
-	grid-column: 1 / span 1;
-	stroke-width: 1px;
-	stroke: rgba(44, 44, 52, .5);
+	& div:has(img) {
+		padding: 0;
+		display: grid;
+
+		& img {
+			width: 100%;
+			image-rendering: pixelated;
+			grid-row: 1 / span 1;
+			grid-column: 1 / span 1;
+		}
+
+		& svg {
+			grid-row: 1 / span 1;
+			grid-column: 1 / span 1;
+			stroke-width: 1px;
+			stroke: rgba(44, 44, 52, .5);
+		}
+	}
 }
 
 .arrow {
 	stroke-linecap: round;
-	stroke-width: 0.75px;
-	stroke: var(--bs-primary);
+	stroke-width: 1px;
+	stroke: var(--theme-primary);
 }

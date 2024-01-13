@@ -1,19 +1,26 @@
-﻿:has(svg) {
-	padding: 0;
+﻿section#configuration {
+	flex-basis: 200px;
+	flex-grow: 1;
+}
+
+section#result {
+	flex-basis: 60%;
+	flex-grow: 2;
+	flex-shrink: 1;
 }
 
 svg .site {
-	fill: var(--bs-primary);
+	fill: var(--theme-primary);
 }
 
 svg .sweep-line {
-	stroke: white;
+	stroke: var(--theme-primary-light);
 	stroke-width: 0.75px;
 }
 
 svg .beach-line {
 	fill: none;
-	stroke: rgba(244, 96, 54, 255);
+	stroke: var(--theme-primary);
 	stroke-width: 0.75px;
 	stroke-linecap: round;
 }
@@ -22,4 +29,8 @@ svg .parabola {
 	fill: none;
 	stroke: rgba(255, 255, 255, .15);
 	stroke-width: 0.75px;
+}
+
+svg .test {
+	fill: red;
 }
