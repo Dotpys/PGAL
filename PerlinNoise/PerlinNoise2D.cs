@@ -20,7 +20,7 @@ public sealed class PerlinNoise2D : PerlinNoiseBase
 		if (wrap)
 		{
 			// Right Side = Left Side
-			for (int y=0; y<GridSize; y++)
+			for (int y = 0; y < GridSize; y++)
 			{
 				GradientMatrix[cellCount, y, 0] = GradientMatrix[0, y, 0];
 				GradientMatrix[cellCount, y, 1] = GradientMatrix[0, y, 1];

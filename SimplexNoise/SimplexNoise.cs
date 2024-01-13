@@ -55,7 +55,7 @@ public class SimplexNoiseF
 
 	public SimplexNoiseF(int seed)
 	{
-		
+
 	}
 
 	public float At(float ix, float iy)
@@ -77,7 +77,7 @@ public class SimplexNoiseF
 		var y0 = iy - Y0;
 
 		int i1, j1;
-		if (x0 > y0) (i1,j1) = (1, 0);
+		if (x0 > y0) (i1, j1) = (1, 0);
 		else (i1, j1) = (0, 1);
 
 		float x1 = x0 - i1 + G2;
@@ -94,21 +94,24 @@ public class SimplexNoiseF
 
 		float t0 = 0.5f - x0 * x0 - y0 * y0;
 		if (t0 < 0) n0 = 0.0f;
-		else {
+		else
+		{
 			t0 *= t0;
 			n0 = t0 * t0 * Dot(grad3[gi0], x0, y0);
 		}
 
 		float t1 = 0.5f - x1 * x1 - y1 * y1;
 		if (t1 < 0) n1 = 0.0f;
-		else {
+		else
+		{
 			t1 *= t1;
 			n1 = t1 * t1 * Dot(grad3[gi1], x1, y1);
 		}
 
 		float t2 = 0.5f - x2 * x2 - y2 * y2;
 		if (t2 < 0) n2 = 0.0f;
-		else {
+		else
+		{
 			t2 *= t2;
 			n2 = t2 * t2 * Dot(grad3[gi2], x2, y2);
 		}
@@ -116,5 +119,5 @@ public class SimplexNoiseF
 		return 70 * (n0 + n1 + n2);
 	}
 
-	private static float Dot(int[] g, float x, float y) =>  g[0] * x + g[1] * y;
+	private static float Dot(int[] g, float x, float y) => g[0] * x + g[1] * y;
 }

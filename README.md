@@ -5,9 +5,10 @@ Procedural Generation Algorithm Library
 
 ## Currently Supported Algotihms:
 - Perlin Noise
-
-## Currently worked on:
 - Simplex Noise
 
-## Currently Planned:
+## Currently worked on:
 - Voronoi Diagrams
+
+## Currently Planned:
+
