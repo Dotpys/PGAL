@@ -15,6 +15,8 @@
     --theme-border: 1px solid rgba(255, 255, 255, 0.15);
     --theme-focus-visible-box-shadow: 0 0 0.75rem var(--theme-primary);
     --theme-focus-visible-outline: 1px solid var(--theme-primary);
+    --theme-transition-time: 150ms;
+    --theme-transition-function: cubic-bezier(1, 0, 0, 1);
 }
 
 a {
@@ -48,17 +50,27 @@ nav {
 
     display: flex;
     flex-direction: column;
+    gap: 0.25rem;
     padding: 1rem;
+
 
     & a {
         display: flex;
         align-items: center;
         border-radius: 4px;
+        outline-offset: 0;
+        transition-property: box-shadow;
+        transition-duration: var(--theme-transition-time);
+        transition-timing-function: var(--theme-transition-function);
         
-        & div {
-            width: 8px;
-            height: 0;
-            border-radius: 8px 0 0 8px;
+        &::before {
+            content: '';
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 4px;
+            transition-property: height, background-color;
+            transition-duration: var(--theme-transition-time);
+            transition-timing-function: var(--theme-transition-function);
         }
 
         & svg {
@@ -73,17 +85,15 @@ nav {
 
         &:hover {
             background-color: var(--background-light-0);
-
-            & div {
-                height: 8px;
+            &::before {
+                height: 0.5rem;
                 background-color: var(--theme-primary-light);
             }
         }
 
         &:focus-visible {
             background-color: var(--background-light-0);
-            & div {
-                height: 0.25rem;
+            &::before {
                 background-color: var(--theme-primary-light);
             }
             outline: var(--theme-focus-visible-outline);
@@ -92,7 +102,7 @@ nav {
 
         &.active {
             background-color: var(--background-light-0);
-            & div {
+            &::before {
                 height: 100%;
                 background-color: var(--theme-primary);
             }
@@ -159,7 +169,7 @@ section {
         /*Styles for all input types*/
         & input {
             appearance: none;
-            transition: box-shadow 150ms cubic-bezier(1, 0, 0, 1);
+            transition: box-shadow var(--theme-transition-time) var(--theme-transition-function);
 
             &:focus-visible {
                 outline: var(--theme-focus-visible-outline);
@@ -198,8 +208,8 @@ section {
             grid-template-areas: ". . ." ". thumb ." ". . .";
             
             transition-property: grid-template-columns, grid-template-rows, opacity;
-            transition-duration: 150ms;
-            transition-timing-function: cubic-bezier(1, 0, 0, 1);
+            transition-duration: var(--theme-transition-time);
+            transition-timing-function: var(--theme-transition-function);
 
             &::after {
                 grid-area: thumb;
