@@ -32,7 +32,39 @@ public sealed class PerlinNoise3D : PerlinNoiseBase
 				}
 			}
 		}
-		// TODO: Wrapping
+		if (wrap)
+		{
+			// X+ Face = X- Face
+			for (int z = 0; z < GridSize; z++)
+			{
+				for (int y = 0; y < GridSize; y++)
+				{
+					GradientMatrix[cellCount, y, z, 0] = GradientMatrix[0, y, z, 0];
+					GradientMatrix[cellCount, y, z, 1] = GradientMatrix[0, y, z, 1];
+					GradientMatrix[cellCount, y, z, 2] = GradientMatrix[0, y, z, 2];
+				}
+			}
+			// Y+ Face = Y- Face
+			for (int z = 0; z < GridSize; z++)
+			{
+				for(int x = 0; x < GridSize; x++)
+				{
+					GradientMatrix[x, cellCount, z, 0] = GradientMatrix[x, 0, z, 0];
+					GradientMatrix[x, cellCount, z, 1] = GradientMatrix[x, 0, z, 1];
+					GradientMatrix[x, cellCount, z, 2] = GradientMatrix[x, 0, z, 2];
+				}
+			}
+			// Z+ Face = Z- Face
+			for (int y = 0; y < GridSize; y++)
+			{
+				for (int x = 0; x < GridSize; x++)
+				{
+					GradientMatrix[x, y, cellCount, 0] = GradientMatrix[x, y, 0, 0];
+					GradientMatrix[x, y, cellCount, 1] = GradientMatrix[x, y, 0, 1];
+					GradientMatrix[x, y, cellCount, 2] = GradientMatrix[x, y, 0, 2];
+				}
+			}
+		}
 	}
 
 	public float At(float ix, float iy, float iz)
@@ -61,16 +93,18 @@ public sealed class PerlinNoise3D : PerlinNoiseBase
 		float wy = y - y0;
 		float wz = z - z0;
 
-		// Interpolate in x direction
 		float e0 = Interpolate(wx, v000, v100);
 		float e1 = Interpolate(wx, v001, v101);
 		float e2 = Interpolate(wx, v010, v110);
 		float e3 = Interpolate(wx, v011, v111);
-		// Interpolate in y direction
+
 		float r0 = Interpolate(wy, e0, e2);
 		float r1 = Interpolate(wy, e1, e3);
-		// Interpolate in z direction  // TODO: Not sure 'bout this resize function.
-		return Interpolate(wz, r0, r1) / MathF.Sqrt(2) + 0.5f;
+		// Final interpolation value range is [-3/(2sqrt(3)), 3/(2sqrt(3))]
+		// we want to bring it to [0, 1] so we need to scale and translate the final value:
+		//	Scale		: sqrt(3)/3		->	[-1/2, 1/2]
+		//	Translation	: 0.5			->	[0, 1]
+		return Interpolate(wz, r0, r1) * (MathF.Sqrt(3)/3) + 0.5f;
 	}
 
 	private float EvaluateFromVertex(float x, float y, float z, int vx, int vy, int vz) =>

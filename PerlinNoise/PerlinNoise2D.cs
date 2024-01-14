@@ -53,6 +53,10 @@ public sealed class PerlinNoise2D : PerlinNoiseBase
 		float wy = y - y0;
 		float e0 = Interpolate(wx, v00, v10);
 		float e1 = Interpolate(wx, v01, v11);
+		// Final interpolation value range is [-sqrt(2)/2, sqrt(2)/2]
+		// we want to bring it to [0, 1] so we need to scale and translate the final value:
+		//	Scale		: 1/sqrt(2)
+		//	Translation	: 0.5
 		return Interpolate(wy, e0, e1) / MathF.Sqrt(2) + 0.5f;
 	}
 
