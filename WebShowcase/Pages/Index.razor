@@ -2,43 +2,50 @@
 
 <PageTitle>Index</PageTitle>
 
-<h1>Index</h1>
+<h1>PGAL Demos</h1>
 
 <main>
 	<section id="sect-perlin">
-		<h2>Demo toggles</h2>
-		<h3>Demo</h3>
-		<form>
-			<label>Unchecked</label>
-			<input type="checkbox" />
-		</form>
-		<form>
-			<label>Checked</label>
-			<input type="checkbox" checked/>
-		</form>
-		<form>
-			<label>Disabled</label>
-			<input type="checkbox" disabled/>
-		</form>
-		<form id="indeterminate">
-			<label>Indeterminate</label>
-			<input type="checkbox" />
-		</form>
+		<h2>Perlin Noise</h2>
+		<h3>Description</h3>
+		<p>
+			Perlin Noise is a type of gradient noise typically
+			used in procedural generation of terrains and
+			textures.
+		</p>
+		<hr/>
+		<h3>Implementation</h3>
+		<p>
+			It can be implemented as an N-dimensional function,
+			but the most common implementations are 2D, 3D and 4D.
+			It's also possible to use one of the dimension as a
+			time 'dimension' enabling some sort of animation.
+		</p>
 	</section>
 
 	<section id="sect-simplex">
 		<h2>Simplex Noise</h2>
+		<h3>Description</h3>
+		<p>
+			Simplex Noise is an improvement to Perlin noise 
+			that aims to lower directional artifacts and
+			computational overhead.
+		</p>
+		<hr />
+		<h3>Implementation</h3>
+		<p>
+			As in Perlin noise it can be implemented as an N-dimensional
+			function. Computationally scales better than Perlin in higher
+			dimensions, and can also be implemented in hardware.
+		</p>
 	</section>
 
 	<section id="sect-voronoi">
 		<h2>Voronoi Diagram</h2>
+		<h3>Description</h3>
+		<p>
+			Voronoi diagrams are a way to partition space in regions
+			that are closest to a certain point in space.
+		</p>
 	</section>
 </main>
-
-@code
-{
-	protected override void OnInitialized()
-	{
-		
-	}
-}

@@ -1,6 +1,5 @@
-﻿main {
-	display: grid;
-
-	grid-template-columns: 1fr 1fr;
-	gap: 1rem;
+﻿section {
+	flex-basis: 40%;
+	flex-grow: 1;
+	flex-shrink: 1;
 }
