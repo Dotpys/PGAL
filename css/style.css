@@ -1,12 +1,11 @@
 :root {
     /*Hues*/
-    --theme-primary-hue: 178;
-    --theme-background-hue: calc(180 + var(--theme-primary-hue));
+    --theme-primary-hue: 140;
     /*Colors*/
-    --theme-primary-dark:   oklch(45.0% 0.200 var(--theme-primary-hue));
-    --theme-primary:        oklch(55.0% 0.200 var(--theme-primary-hue));
-    --theme-primary-light:  oklch(75.0% 0.200 var(--theme-primary-hue));
-    --theme-background:     oklch(22.5% 0.015 var(--theme-background-hue));
+    --theme-primary-dark:   oklch(50.0% 0.200 var(--theme-primary-hue));
+    --theme-primary:        oklch(60.0% 0.200 var(--theme-primary-hue));
+    --theme-primary-light:  oklch(70.0% 0.200 var(--theme-primary-hue));
+    --theme-background:     #171717;
 
     --background-light-0: rgba(255, 255, 255, 0.05);
     --background-light-1: rgba(255, 255, 255, 0.15);
@@ -147,10 +146,14 @@ section {
     }
 
     & h3 {
-        margin: 1rem 0.75rem 0.75rem 1rem;
+        margin: 0.75rem 1rem;
         line-height: 2rem;
-        font-size: 2rem;
+        font-size: 1.5rem;
         font-weight: 500;
+    }
+
+    & p {
+        margin: 0 1rem 0.5rem 1rem;
     }
 
     & form {
@@ -269,7 +272,6 @@ section {
         }
 
         & button {
-            width: initial;
         }
 
         & *:first-child {

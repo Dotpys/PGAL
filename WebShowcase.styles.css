@@ -3,11 +3,10 @@ a svg[b-6xmr3ymg44] {
 	fill: white;
 }
 /* /Pages/Index.razor.rz.scp.css */
-main[b-2j0m7xkzog] {
-	display: grid;
-
-	grid-template-columns: 1fr 1fr;
-	gap: 1rem;
+section[b-2j0m7xkzog] {
+	flex-basis: 40%;
+	flex-grow: 1;
+	flex-shrink: 1;
 }
 /* /Pages/PerlinNoise2D.razor.rz.scp.css */
 section#configuration[b-5rp2m40qau] {
@@ -80,40 +79,64 @@ section#result[b-ljpdtxa4c4] {
 		border-radius: 0 0 8px 8px;
 	}
 }
-/* /Pages/VoronoiDiagram.razor.rz.scp.css */
-section#configuration[b-dc7r0xr2fu] {
+/* /Pages/VoronoiDiagramDelaunay.razor.rz.scp.css */
+section#configuration[b-4vec6p1f6j] {
 	flex-basis: 200px;
 	flex-grow: 1;
 }
 
-section#result[b-dc7r0xr2fu] {
+section#result[b-4vec6p1f6j] {
 	flex-basis: 60%;
 	flex-grow: 2;
 	flex-shrink: 1;
 }
 
-svg .site[b-dc7r0xr2fu] {
+svg .site[b-4vec6p1f6j] {
 	fill: var(--theme-primary);
 }
 
-svg .sweep-line[b-dc7r0xr2fu] {
+svg .circle[b-4vec6p1f6j] {
+	fill: transparent;
+	stroke: rgba(255, 255, 255, .05);
+}
+
+svg .circle-center[b-4vec6p1f6j] {
+	fill: red;
+}
+/* /Pages/VoronoiDiagramFortune.razor.rz.scp.css */
+section#configuration[b-d6e4ltqfwd] {
+	flex-basis: 200px;
+	flex-grow: 1;
+}
+
+section#result[b-d6e4ltqfwd] {
+	flex-basis: 60%;
+	flex-grow: 2;
+	flex-shrink: 1;
+}
+
+svg .site[b-d6e4ltqfwd] {
+	fill: var(--theme-primary);
+}
+
+svg .sweep-line[b-d6e4ltqfwd] {
 	stroke: var(--theme-primary-light);
 	stroke-width: 0.75px;
 }
 
-svg .beach-line[b-dc7r0xr2fu] {
+svg .beach-line[b-d6e4ltqfwd] {
 	fill: none;
 	stroke: var(--theme-primary);
 	stroke-width: 0.75px;
 	stroke-linecap: round;
 }
 
-svg .parabola[b-dc7r0xr2fu] {
+svg .parabola[b-d6e4ltqfwd] {
 	fill: none;
 	stroke: rgba(255, 255, 255, .15);
 	stroke-width: 0.75px;
 }
 
-svg .test[b-dc7r0xr2fu] {
+svg .test[b-d6e4ltqfwd] {
 	fill: red;
 }
