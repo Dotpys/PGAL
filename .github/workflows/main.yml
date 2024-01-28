@@ -15,6 +15,9 @@ jobs:
         with:
           dotnet-version: 8
 
+      - name: Setup WASM workload
+        run: dotnet workload restore ./WebShowcase/WebShowcase.csproj
+
       - name: Publish .NET Project
         run: dotnet publish ./WebShowcase/WebShowcase.csproj -c Release -o release --nologo
     
