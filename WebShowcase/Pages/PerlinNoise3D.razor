@@ -4,6 +4,8 @@
 @using SixLabors.ImageSharp.PixelFormats
 @using System.Globalization
 
+@inject IJSRuntime JSRuntime
+
 <PageTitle>Perlin Noise 3D</PageTitle>
 
 <h1>Perlin Noise 3D</h1>
@@ -35,21 +37,20 @@
 			<label for="input-textureSize">px</label>
 		</form>
 
-		<button type="button" @onclick="GenerateTexture">Generate</button>
 	</section>
 
 	<section id="result">
 		<h2>Result</h2>
-		
-		<img id="texture" alt="generated noise" src=@(frameUrls[FrameZ]) />
+
+		<canvas id="viewport" width="720" height="720"></canvas>
 
 		<hr/>
 
 		<h3>Animation controls</h3>
-		<form id="frameZ">
-			<label for="input-frameZ" style="width: @(7 + (TextureSize-1).ToString().Length)ch">Frame: @(FrameZ)</label>
-			<input  id="input-frameZ" type="range"  min="0" max="@(TextureSize-1)" @bind="FrameZ" @bind:event="oninput" />
-			<button type="button" @onclick=@(() => { Animated = !Animated; })>@(Animated ? "Stop" : "Play")</button>
+		<form>
+			<label for="input-threshold">Threshold: @($"{Threshold:F02}")</label>
+			<input type="range" id="input-threshold" min="0" max="1" step="0.01" @bind="Threshold" @bind:event="oninput" />
+			<button type="button" @onclick=GenerateModel>Generate</button>
 		</form>
 	</section>
 </main>
@@ -60,57 +61,42 @@
 	public int CellCount { get; set; } = 8;
 	public bool Wrap { get; set; } = false;
 
-	public int TextureSize { get; set; } = 64;
+	public int TextureSize { get; set; } = 48;
 
-	public uint FrameZ { get; set; } = 0;
-	public bool Animated { get; set; } = false;
-
-	private string[] frameUrls = new string[64];
-	private Timer? timer;
+	public float Threshold { get; set; } = 0.55f;
 
 	protected override async Task OnInitializedAsync()
 	{
 		await JSHost.ImportAsync("PerlinNoise3D", "../Pages/PerlinNoise3D.razor.js");
-		GenerateTexture();
-		timer = new Timer(Animate, null, 0, 100);
+		await StartRenderer();
+		GenerateModel();
 	}
 
-	private void Animate(object? o)
+	private void GenerateModel()
 	{
-		if (Animated)
-		{
-			FrameZ = (uint)((FrameZ + 1) % TextureSize);
-			StateHasChanged();
-		}
-	}
-
-	private void GenerateTexture()
-	{
-		frameUrls = new string[TextureSize];
-
 		PGAL.Noise.PerlinNoise3D noise = new(Seed, (uint) CellCount, Wrap);
-
+		
+		float[,,] lattice = new float[TextureSize, TextureSize, TextureSize];
+		
 		for (int z = 0; z < TextureSize; z++)
+		for (int y = 0; y < TextureSize; y++)
+		for (int x = 0; x < TextureSize; x++)
 		{
-			Rgba32[] textureData = new Rgba32[TextureSize * TextureSize];
-			for (int y = 0; y < TextureSize; y++)
+			var sx = CellCount * (float)x / TextureSize;
+			var sy = CellCount * (float)y / TextureSize;
+			var sz = CellCount * (float)z / TextureSize;
+		
+			lattice[x, y, z] = noise.At(sx, sy, sz);
+		
+			if (x == 0 || y == 0 || z == 0 || x == (TextureSize - 1) || y == (TextureSize - 1) || z == (TextureSize - 1))
 			{
-				for (int x = 0; x < TextureSize; x++)
-				{
-					var sx = CellCount * (float)x / TextureSize;
-					var sy = CellCount * (float)y / TextureSize;
-					var sz = CellCount * (float)z / TextureSize;
-					byte v = (byte)(noise.At(sx, sy, sz) * 255);
-					textureData[TextureSize * y + x] = new Rgba32(v, v, v);
-				}
+				lattice[x, y, z] = 0;
 			}
-
-			Image<Rgba32> a = Image<Rgba32>.LoadPixelData(new ReadOnlySpan<Rgba32>(textureData), TextureSize, TextureSize);
-			MemoryStream ms = new();
-			a.SaveAsPng(ms);
-			byte[] pngBuffer = ms.ToArray();
-
-			frameUrls[z] = LoadFrame(pngBuffer);
 		}
+
+		var vertexBufferData = MarchingCubes.GenerateMesh(lattice, TextureSize-1, Threshold);
+		
+		// JS interop function. Changes the currend vertex buffer in VRAM an its reference for WebGPU.
+		LoadVertexBuffer(vertexBufferData);
 	}
 }

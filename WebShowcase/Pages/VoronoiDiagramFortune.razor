@@ -70,7 +70,7 @@
 	private const float MAX_SIZE = 100f;
 	private const int DEFAULT_SITE_COUNT = 5;
 
-	public int Seed { get; set; } = 428;
+	public int Seed { get; set; } = 422;
 	public int SiteCount { get; set; } = DEFAULT_SITE_COUNT;
 	public int SweepProgress { get; set; } = 75;
 
@@ -92,7 +92,7 @@
 			float x = r.NextSingle() * MAX_SIZE;
 			float y = r.NextSingle() * MAX_SIZE;
 			sites[i] = new(x, y);
-			eventQueue.Enqueue(new VoronoiSiteEvent(i), y);
+			eventQueue.Enqueue(new VoronoiSiteEvent(), y);
 		}
 		StateHasChanged();
 	}
@@ -166,38 +166,38 @@
 
 	abstract class VoronoiEvent { }
 
-	sealed class VoronoiSiteEvent(int SiteIndex) : VoronoiEvent { }
+	sealed class VoronoiSiteEvent() : VoronoiEvent { }
 
-	sealed class VoronoiVertexEvent(int Site1, int Site2, int Site3) : VoronoiEvent { }
+	sealed class VoronoiVertexEvent() : VoronoiEvent { }
 
 	private void GenerateDiagram(Vector2[] sites)
 	{
-		PriorityQueue<VoronoiEvent, float> eventQueue = new();
-		List<int> beachLine = new();
-
-		// Fill event queue with Site Events
-		for(int i=0; i<sites.Length; i++)
-		{
-			eventQueue.Enqueue(new VoronoiSiteEvent(i), sites[i].Y);
-		}
-
-		while (eventQueue.TryDequeue(out VoronoiEvent e, out float y))
-		{
-			// TODO: Deleted Events?
-			if (e is VoronoiSiteEvent)
-			{
-				var siteEvent = (VoronoiSiteEvent)e;
-				// Insert Parabola
-				// if root != null; root = new parabola(e.site)
-				// if root.isLeaf() && root.site.y - p.y < 1)
-				{
-				}
-			}
-			else
-			{
-				// Remove Parabola
-			}
-		}
+		//PriorityQueue<VoronoiEvent, float> eventQueue = new();
+		//List<int> beachLine = new();
+		//
+		//// Fill event queue with Site Events
+		//for(int i=0; i<sites.Length; i++)
+		//{
+		//	//eventQueue.Enqueue(new VoronoiSiteEvent(i), sites[i].Y);
+		//}
+		//
+		//while (eventQueue.TryDequeue(out VoronoiEvent e, out float y))
+		//{
+		//	// TODO: Deleted Events?
+		//	if (e is VoronoiSiteEvent)
+		//	{
+		//		var siteEvent = (VoronoiSiteEvent)e;
+		//		// Insert Parabola
+		//		// if root != null; root = new parabola(e.site)
+		//		// if root.isLeaf() && root.site.y - p.y < 1)
+		//		{
+		//		}
+		//	}
+		//	else
+		//	{
+		//		// Remove Parabola
+		//	}
+		//}
 	}
 
 	struct Circle

@@ -1,6 +1,7 @@
 ﻿@page "/voronoi/delaunay"
 @using System.Globalization
 @using System.Numerics
+@using System.Runtime.InteropServices.JavaScript
 @using System.Text
 
 <PageTitle>Delaunay Triangulation</PageTitle>
@@ -11,7 +12,7 @@
 	<section id="configuration">
 		<h2>Configuration</h2>
 
-		<h3>Voronoi Diagram</h3>
+		<h3>Site Generation</h3>
 
 		<form>
 			<label for="seed">Seed</label>
@@ -29,7 +30,29 @@
 	<section id="result">
 		<h2>Result Image</h2>
 
-		<svg viewBox="0 0 100 100">
+		<svg id="viewport" viewBox="0 0 100 100" @onclick=OnSVGClick >
+
+			@foreach (var triangle in triangulation)
+			{
+				<line style="stroke: rgba(128, 128, 128, 0.5)"
+					x1="@triangle.a.X.ToString(CultureInfo.InvariantCulture)"
+					y1="@triangle.a.Y.ToString(CultureInfo.InvariantCulture)"
+					x2="@triangle.b.X.ToString(CultureInfo.InvariantCulture)"
+					y2="@triangle.b.Y.ToString(CultureInfo.InvariantCulture)" />
+
+				<line style="stroke: rgba(128, 128, 128, 0.5)"
+					x1="@triangle.b.X.ToString(CultureInfo.InvariantCulture)"
+					y1="@triangle.b.Y.ToString(CultureInfo.InvariantCulture)"
+					x2="@triangle.c.X.ToString(CultureInfo.InvariantCulture)"
+					y2="@triangle.c.Y.ToString(CultureInfo.InvariantCulture)" />
+
+				<line style="stroke: rgba(128, 128, 128, 0.5)"
+					x1="@triangle.a.X.ToString(CultureInfo.InvariantCulture)"
+					y1="@triangle.a.Y.ToString(CultureInfo.InvariantCulture)"
+					x2="@triangle.c.X.ToString(CultureInfo.InvariantCulture)"
+					y2="@triangle.c.Y.ToString(CultureInfo.InvariantCulture)" />
+			}
+
 			<!--Sites-->
 			@foreach (var site in sites)
 			{
@@ -39,121 +62,62 @@
 					r="1.5" />
 			}
 
-			@foreach (var circle in Circles)
-			{
-				<circle class="circle"
-					cx="@circle.Center.X.ToString(CultureInfo.InvariantCulture)"
-					cy="@circle.Center.Y.ToString(CultureInfo.InvariantCulture)"
-					r="@circle.Radius.ToString(CultureInfo.InvariantCulture)" />
-
-				<circle class="circle-center"
-					cx="@circle.Center.X.ToString(CultureInfo.InvariantCulture)"
-					cy="@circle.Center.Y.ToString(CultureInfo.InvariantCulture)"
-					r="1" />
-			}
-
 		</svg>
 
 		<hr/>
 
 		<h3>Controls</h3>
+		<p>Click on the canvas above to insert new sites or to remove them.</p>
+
 	</section>
 </main>
 
-@code {
+@code
+{
 	private const float MAX_SIZE = 100f;
-	private const int DEFAULT_SITE_COUNT = 10;
+	private const int DEFAULT_SITE_COUNT = 8;
 
-	public int Seed { get; set; } = 423;
+	public int Seed { get; set; } = 420;
 	public int SiteCount { get; set; } = DEFAULT_SITE_COUNT;
 
-	private Vector2[] sites = new Vector2[DEFAULT_SITE_COUNT];
+	private List<Vector2> sites = [];
 
-	private IEnumerable<Circle> Circles => sites
-		//Tutte le terne possibili di punti
-		.DifferentCombinations(3)
-		//Calcola il circumcerchio
-		.Select(sites =>
-		{
-			var s = sites.ToArray();
-			var result = TryGetCircleByPoints(s[0], s[1], s[2], out Circle c);
-			return (result, c);
-		})
-		.Where(t => t.result)
-		.Select(t => t.c)
-		//Solo i cerchi con nessun sito al loro interno
-		.Where(circle => !sites
-			.Select(site => MathF.Sqrt(MathF.Pow(circle.Center.X - site.X, 2) + MathF.Pow(circle.Center.Y - site.Y, 2)))
-			.Where(distance => distance < (circle.Radius - 0.1)).Any());
+	private List<Triangle> triangulation = [];
 
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
+		await JSHost.ImportAsync("VoronoiDiagramDelaunay", "../Pages/VoronoiDiagramDelaunay.razor.js");
 		GenerateSites();
 	}
 
 	private void GenerateSites()
 	{
-		sites = new Vector2[SiteCount];
+		sites.Clear();
 		Random r = new Random(Seed);
 		foreach (int i in Enumerable.Range(0, SiteCount))
 		{
 			float x = r.NextSingle() * MAX_SIZE;
 			float y = r.NextSingle() * MAX_SIZE;
-			sites[i] = new(x, y);
+			sites.Add(new(x, y));
 		}
+		triangulation = sites.Triangulate();
 		StateHasChanged();
 	}
 
-	struct Circle
+	private void OnSVGClick(MouseEventArgs e)
 	{
-		public Vector2 Center { get; init; }
-		public float Radius { get; init; }
-	}
-
-	private void Test()
-	{
-		var a = sites.SelectMany(
-			(element, index) =>
-				sites.Skip(index + 1)
-		);
-	}
-
-
-
-	private bool TryGetCircleByPoints(Vector2 p1, Vector2 p2, Vector2 p3, out Circle circle)
-	{
-		// Eliminazione gaussiana.
-		float[] m =
-		[
-			2*p1.X, 2*p1.Y, 1, -(p1.X * p1.X + p1.Y * p1.Y),
-		2*p2.X, 2*p2.Y, 1, -(p2.X * p2.X + p2.Y * p2.Y),
-		2*p3.X, 2*p3.Y, 1, -(p3.X * p3.X + p3.Y * p3.Y),
-	];
-		float n = 0;
-		// Portiamo in forma triangolare
-		// L2 -> L2 - L1 * (L2_0/L1_0)
-		n = m[4] / m[0];
-		for (int i = 0; i<4; i++) m[4 + i] -= m[0 + i] * n;
-
-		// L3 -> L3 - L1 * (L3_0/L1_0)
-		n = m[8] / m[0];
-		for (int i = 0; i<4; i++) m[8 + i] -= m[0 + i] * n;
-
-		// L3 -> L3 - L2 * (L3_1/L2_1)
-		n = m[9] / m[5];
-		for (int i = 0; i<4; i++) m[8 + i] -= m[4 + i] * n;
-		// Ci fermiamo alla eliminazione di Gauss invece di proseguire con la eliminazione di Gauss-Jordan
-		var c = m[11] / m[10];
-		var b = (m[7] - m[6] * c) / m[5];
-		var a = (m[3] - m[1] * b - m[2] * c) / m[0];
-
-		// TODO: Check for edge cases (colinear points)
-
-		circle = new Circle()
-			{
-				Center = new Vector2(-a, -b),
-				Radius = MathF.Sqrt(-a * -a + -b * -b - c)
-			};
-		return true;
+		double[] svgCoords = GetSVGClickPosition(e.ClientX, e.ClientY);
+		Vector2 point = new((float)svgCoords[0], (float)svgCoords[1]);
+		if (sites.Any(s => Vector2.Distance(s, point) < 1.5))
+		{
+			Vector2 deletedSite = sites.Single(s => Vector2.Distance(s, point) < 1.5);
+			sites.Remove(deletedSite);
+		}
+		else
+		{
+			sites.Add(point);
+		}
+		triangulation = sites.Triangulate();
+		StateHasChanged();
 	}
 }

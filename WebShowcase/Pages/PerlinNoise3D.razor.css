@@ -7,10 +7,9 @@ section#result {
 	flex-basis: 60%;
 	flex-grow: 2;
 	flex-shrink: 1;
+}
 
-	& img {
-		padding: 0;
-		image-rendering: pixelated;
-		width: 100%;
-	}
+canvas#viewport {
+	aspect-ratio: 1/1;
+	width: 100%;
 }

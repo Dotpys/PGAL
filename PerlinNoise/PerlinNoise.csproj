@@ -1,12 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <PackageId>Dotpys.PGAL.Perlin</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Julien Russo</Authors>
+    <Description>Enables random number generation using the Perlin Noise Algorithm.</Description>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Title>PGAL.PerlinNoise</Title>
-    <Authors>Dotpys</Authors>
   </PropertyGroup>
 
 </Project>

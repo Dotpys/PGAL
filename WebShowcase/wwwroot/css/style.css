@@ -272,6 +272,7 @@ section {
         }
 
         & button {
+            width: fit-content;
         }
 
         & *:first-child {
@@ -292,7 +293,7 @@ section {
     & button {
         width: 100%;
         color: white;
-        padding: 0.25rem 0;
+        padding: 0.25rem;
         border: 0;
         border-radius: 7px;
         background-color: var(--theme-primary);

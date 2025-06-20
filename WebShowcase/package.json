@@ -1,0 +1,18 @@
+{
+  "name": "webshowcase",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "scripts": {
+    "watch:ts": "tsc --watch --project tsconfig.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@webgpu/types": "^0.1.61"
+  }
+}

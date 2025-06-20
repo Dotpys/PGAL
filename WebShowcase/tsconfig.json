@@ -1,0 +1,31 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		"module": "esnext",
+		"strict": false,
+
+		"allowSyntheticDefaultImports": false,
+		"allowUnreachableCode": true,
+		"allowUnusedLabels": true,
+		"lib": [
+			"dom",
+			"dom.iterable",
+			"esnext"
+		],
+		"noEmitOnError": false,
+		"noImplicitAny": false,
+		"removeComments": true,
+		"paths": {
+			"*": [ "./node_modules/*" ],
+			"/dist/*": [ "./typescript/*" ]
+		},
+		"typeRoots": [
+			"./node_modules/@webgpu/types"
+		],
+		"baseUrl": "."
+	},
+	"include": [
+		"./Pages/*.ts"
+	],
+	"compileOnSave": true
+}
