@@ -54,12 +54,11 @@ section#result[b-ovjj51x463] {
 	flex-basis: 60%;
 	flex-grow: 2;
 	flex-shrink: 1;
+}
 
-	& img {
-		padding: 0;
-		image-rendering: pixelated;
-		width: 100%;
-	}
+canvas#viewport[b-ovjj51x463] {
+	aspect-ratio: 1/1;
+	width: 100%;
 }
 /* /Pages/SimplexNoise.razor.rz.scp.css */
 section#configuration[b-ljpdtxa4c4] {
