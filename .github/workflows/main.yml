@@ -18,6 +18,12 @@ jobs:
       - name: Setup WASM workload
         run: dotnet workload restore ./WebShowcase/WebShowcase.csproj
 
+      - name: Setup NPM dependencies
+        run: |
+          cd ./WebShowcase
+          npm install
+          cd ..
+
       - name: Publish .NET Project
         run: dotnet publish ./WebShowcase/WebShowcase.csproj -c Release -o release --nologo
     
