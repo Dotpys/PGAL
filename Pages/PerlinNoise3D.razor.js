@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { mat4x4inv, mat4x4mul, mat4x4orthogonalProjection, mat4x4rotation, quatRotation } from "/PGAL/dist/matrix.js";
+import { mat4x4inv, mat4x4mul, mat4x4orthogonalProjection, mat4x4rotation, quatRotation } from "/dist/matrix.js";
 const shaderCode = `
 // Argomenti "globali" passati alla shader
 @group(0) @binding(0) var<uniform> t: f32;
