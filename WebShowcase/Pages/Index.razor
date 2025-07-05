@@ -1,13 +1,12 @@
 ﻿@page "/"
-@using System.Runtime.InteropServices.JavaScript
+@using WebShowcase.Component
 
-<PageTitle>Index</PageTitle>
+<PageTitle>PGAL</PageTitle>
 
 <h1>PGAL Demos</h1>
 
 <main>
-	<section id="sect-perlin">
-		<h2>Perlin Noise</h2>
+	<Section Title="Perlin Noise">
 		<h3>Description</h3>
 		<p>
 			Perlin Noise is a type of gradient noise typically
@@ -22,10 +21,9 @@
 			It's also possible to use one of the dimension as a
 			time 'dimension' enabling some sort of animation.
 		</p>
-	</section>
+	</Section>
 
-	<section id="sect-simplex">
-		<h2>Simplex Noise</h2>
+	<Section Title="Simplex Noise">
 		<h3>Description</h3>
 		<p>
 			Simplex Noise is an improvement to Perlin noise 
@@ -39,14 +37,13 @@
 			function. Computationally scales better than Perlin in higher
 			dimensions, and can also be implemented in hardware.
 		</p>
-	</section>
+	</Section>
 
-	<section id="sect-voronoi">
-		<h2>Voronoi Diagram</h2>
+	<Section Title="Voronoi Diagram">
 		<h3>Description</h3>
 		<p>
 			Voronoi diagrams are a way to partition space in regions
 			that are closest to a certain point in space.
 		</p>
-	</section>
+	</Section>
 </main>

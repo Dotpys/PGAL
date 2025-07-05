@@ -22,6 +22,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimplexNoise", "SimplexNoise\SimplexNoise.csproj", "{4EEE9ACA-B7C4-4F09-BF5E-6CAD9098F6A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomExtensions", "RandomExtensions\RandomExtensions.csproj", "{0E4982C6-F2D6-4063-B083-6012E491EECF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmark", "Benchmark\Benchmark.csproj", "{40B73007-5659-4AE7-B01D-BDC9093F970F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +44,14 @@ Global
 		{4EEE9ACA-B7C4-4F09-BF5E-6CAD9098F6A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EEE9ACA-B7C4-4F09-BF5E-6CAD9098F6A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EEE9ACA-B7C4-4F09-BF5E-6CAD9098F6A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E4982C6-F2D6-4063-B083-6012E491EECF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E4982C6-F2D6-4063-B083-6012E491EECF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E4982C6-F2D6-4063-B083-6012E491EECF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E4982C6-F2D6-4063-B083-6012E491EECF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40B73007-5659-4AE7-B01D-BDC9093F970F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40B73007-5659-4AE7-B01D-BDC9093F970F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40B73007-5659-4AE7-B01D-BDC9093F970F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40B73007-5659-4AE7-B01D-BDC9093F970F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

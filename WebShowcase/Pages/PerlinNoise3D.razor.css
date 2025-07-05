@@ -1,9 +1,17 @@
-﻿section#configuration {
+﻿main {
+	padding: 0 1rem 1rem 1rem;
+	display: flex;
+	flex-flow: row wrap;
+	align-items: flex-start;
+	gap: 1rem;
+}
+
+::deep > section#section-configuration {
 	flex-basis: 200px;
 	flex-grow: 1;
 }
 
-section#result {
+::deep > section#section-result {
 	flex-basis: 60%;
 	flex-grow: 2;
 	flex-shrink: 1;

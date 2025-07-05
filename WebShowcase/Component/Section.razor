@@ -1,0 +1,12 @@
+﻿<section id="@($"section-{Title.ToLower().Replace(' ', '-')}")">
+	<h2>@Title</h2>
+	@ChildContent
+</section>
+
+@code {
+	[Parameter]
+	public required string Title { get; set; }
+
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
+}

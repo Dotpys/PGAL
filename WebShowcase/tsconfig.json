@@ -25,6 +25,7 @@
 		"baseUrl": "."
 	},
 	"include": [
+		"./Component/*.ts",
 		"./Pages/*.ts"
 	],
 	"compileOnSave": true

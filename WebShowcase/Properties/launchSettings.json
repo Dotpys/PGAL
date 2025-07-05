@@ -4,9 +4,9 @@
 		"http": {
 			"commandName": "Project",
 			"dotnetRunMessages": true,
-			"launchBrowser": true,
+			"launchBrowser": false,
 			"inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
-			"applicationUrl": "http://localhost:5259",
+			"applicationUrl": "http://localhost:7000",
 			"launchUrl": "noise/perlin/3d",
 			"environmentVariables": {
 				"ASPNETCORE_ENVIRONMENT": "Development"
@@ -15,9 +15,9 @@
 		"https": {
 			"commandName": "Project",
 			"dotnetRunMessages": true,
-			"launchBrowser": true,
+			"launchBrowser": false,
 			"inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
-			"applicationUrl": "https://localhost:7254;http://localhost:5259",
+			"applicationUrl": "https://localhost:7001;http://localhost:7000",
 			"launchUrl": "noise/perlin/3d",
 			"environmentVariables": {
 				"ASPNETCORE_ENVIRONMENT": "Development"

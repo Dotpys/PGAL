@@ -1,3 +1,67 @@
-﻿a svg {
+﻿nav {
+	grid-area: nav;
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+	padding: 1rem;
+}
+
+::deep>a {
+	display: flex;
+	align-items: center;
+	border-radius: 4px;
+	outline-offset: 0;
+	transition-property: box-shadow;
+	transition-duration: var(--theme-transition-time);
+	transition-timing-function: var(--theme-transition-function);
+
+}
+
+::deep>a>svg {
+	margin: 0 0 0 0.5rem;
+	height: 1.75rem;
 	fill: white;
+}
+
+::deep>a>p {
+	margin: 0.5rem;
+	line-height: 1.5rem;
+}
+
+::deep>a::before {
+	content: '';
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: 4px;
+	transition-property: height, background-color;
+	transition-duration: var(--theme-transition-time);
+	transition-timing-function: var(--theme-transition-function);
+}
+
+::deep>a:hover {
+	background-color: var(--background-light-0);
+}
+
+::deep>a:hover::before {
+	height: 0.5rem;
+	background-color: var(--theme-primary-light);
+}
+
+::deep>a:focus-visible {
+	background-color: var(--background-light-0);
+	outline: var(--theme-focus-visible-outline);
+	box-shadow: var(--theme-focus-visible-box-shadow);
+}
+
+::deep>a:focus-visible::before {
+	background-color: var(--theme-primary-light);
+}
+
+::deep>a.active {
+	background-color: var(--background-light-0);
+}
+
+::deep>a.active::before {
+	height: 100%;
+	background-color: var(--theme-primary);
 }

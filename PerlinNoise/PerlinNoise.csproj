@@ -15,4 +15,8 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RandomExtensions\RandomExtensions.csproj" />
+  </ItemGroup>
+
 </Project>

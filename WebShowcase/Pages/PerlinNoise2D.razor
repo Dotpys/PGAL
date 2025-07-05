@@ -1,144 +1,211 @@
 ﻿@page "/noise/perlin/2d"
-@using SixLabors.ImageSharp
-@using SixLabors.ImageSharp.PixelFormats
 @using System.Globalization
 @using System.Runtime.InteropServices.JavaScript
+@using RandomExtensions
+@using WebShowcase.Component
 
 <PageTitle>Perlin Noise 2D</PageTitle>
 
 <h1>Perlin Noise 2D</h1>
 
 <main>
-	<section id="configuration">
-		<h2>Configuration</h2>
+	<Section Title="Configuration">
+		<h3>RNG</h3>
+		<form id="rng-algorithm">
+			<label for="rng-inputAlgorithm">Algorithm</label>
+			<select id="rng-inputAlgorithm" disabled>
+				<option selected>xoshiro128+</option>
+				<option>xoshiro128++</option>
+				<option>xoshiro128**</option>
+				<option>xoshiro256+</option>
+				<option>xoshiro256++</option>
+				<option>xoshiro256**</option>
+				<option>xoshiro512+</option>
+				<option>xoshiro512++</option>
+				<option>xoshiro512**</option>
+				<option>xoshiro1024+</option>
+				<option>xoshiro1024++</option>
+				<option>xoshiro1024**</option>
+			</select>
+		</form>
+		<form id="rng-seed">
+			<label for="rng-inputSeed">Seed</label>
+			<input id="rng-inputSeed" type="number" @bind="Seed" />
+		</form>
+
+		<hr />
 
 		<h3>Perlin Noise</h3>
-		<form id="seed">
-			<label for="input-seed">Seed</label>
-			<input  id="input-seed" type="number" @bind="Seed" />
+		<form id="perlinNoise-cellCount">
+			<label for="perlinNoise-inputCellCount">Cell Count</label>
+			<input  id="perlinNoise-inputCellCount" type="number" min="1" @bind="CellCount" />
+			<label for="perlinNoise-inputCellCount">^2</label>
 		</form>
-		<form id="cellCount">
-			<label for="input-cellCount">Cell Count</label>
-			<input  id="input-cellCount" type="number" @bind="CellCount" />
-			<label for="input-cellCount">^2</label>
-		</form>
-		<form id="wrap">
-			<label for="input-wrap">Wrap</label>
-			<input  id="input-wrap" type="checkbox" @bind="Wrap" />
+		<form id="perlinNoise-wrap">
+			<label for="perlinNoise-inputWrap">Wrap</label>
+			<input  id="perlinNoise-inputWrap" type="checkbox" @bind="Wrap" />
 		</form>
 
 		<hr />
 
 		<h3>Texture</h3>
-		<form id="textureSize">
-			<label for="input-textureSize">Texture Size</label>
-			<input  id="input-textureSize" type="number" @bind="TextureSize" />
-			<label for="input-textureSize">px</label>
+		<form id="texture-size">
+			<label for="texture-inputSize">Texture Size</label>
+			<input  id="texture-inputSize" type="number" @bind="TextureSize" />
+			<label for="texture-inputSize">px</label>
 		</form>
 
-		<button type="button" @onclick="GenerateTexture">Generate</button>
-	</section>
+		<button type="button" @onclick="QueueNoiseGenerationAsync">Generate</button>
+	</Section>
 
-	<section id="result">
-		<h2>Result Image</h2>
-			
+	<Section Title="Result">
 		<div>
-			<img id="texture" alt="generated noise" />
-			<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
-				@if (ShowGrid)
-				{
-					@for (float i = 1; i < CellCount; i++)
+			<canvas id="result-canvas" hidden=@(pixelData == null) />
+			@if(isGenerating)
+			{
+				<svg class="progress" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+					<path d="M5.18,10.82A4,4,0,1,1,10.82,10.82" pathLength="100" stroke-dasharray="@(generationProgress * 100) 200" />
+					<text x="8" y="8.5">@($"{(generationProgress * 100):F0}")%</text>
+				</svg>
+			}
+			else
+			{
+				<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+					@if (!isGenerating && ShowGrid)
 					{
-						<line x1=@((i * GridSize).ToString(CultureInfo.InvariantCulture))
-								y1="0"
-								x2=@((i * GridSize).ToString(CultureInfo.InvariantCulture))
-								y2="256" />
-
-						<line x1="0"
-								y1=@((i * GridSize).ToString(CultureInfo.InvariantCulture))
-								x2="256"
-								y2=@((i * GridSize).ToString(CultureInfo.InvariantCulture)) />
-					}
-					@if (ShowVectors)
-					{
-						@for (int y = 0; y < CellCount+1; y++)
+						@for (float i = 1; i < CellCount; i++)
 						{
-							@for (int x = 0; x < CellCount+1; x++)
+							<line x1=@((i * 256 / CellCount).ToString(CultureInfo.InvariantCulture)) y1="0"
+								  x2=@((i * 256 / CellCount).ToString(CultureInfo.InvariantCulture)) y2="256" />
+
+							<line x1="0" y1=@((i * 256 / CellCount).ToString(CultureInfo.InvariantCulture))
+								  x2="256" y2=@((i * 256 / CellCount).ToString(CultureInfo.InvariantCulture)) />
+						}
+						@if (ShowVectors)
+						{
+							@for (int y = 0; y < CellCount + 1; y++)
 							{
-								<line class="arrow"
-										x1=@(((float)x * GridSize).ToString(CultureInfo.InvariantCulture))
-										y1=@(((float)y * GridSize).ToString(CultureInfo.InvariantCulture))
-										x2=@((((float)x + GradientMatrix[x, y, 0]*0.75)*GridSize).ToString(CultureInfo.InvariantCulture))
-										y2=@((((float)y + GradientMatrix[x, y, 1]*0.75)*GridSize).ToString(CultureInfo.InvariantCulture)) />
+								@for (int x = 0; x < CellCount + 1; x++)
+								{
+									<line class="arrow"
+										  x1=@(((float)x * 256 / CellCount).ToString(CultureInfo.InvariantCulture))
+										  y1=@(((float)y * 256 / CellCount).ToString(CultureInfo.InvariantCulture))
+										  x2=@((((float)x + GradientMatrix[x, y, 0] * 0.75) * 256 / CellCount).ToString(CultureInfo.InvariantCulture))
+										  y2=@((((float)y + GradientMatrix[x, y, 1] * 0.75) * 256 / CellCount).ToString(CultureInfo.InvariantCulture)) />
+								}
 							}
 						}
 					}
-				}
-			</svg>
+				</svg>
+			}
 		</div>
-		
-		<hr />
+		@if (!isGenerating)
+		{
+			<hr />
 
-		<h3>Overlay</h3>
-		<form id="showGrid">
-			<label for="input-showGrid">Show Grid</label>
-			<input  id="input-showGrid" type="checkbox" @bind="ShowGrid" />
-		</form>
-		<form id="showVectors">
-			<label for="input-showVectors">Show Vectors</label>
-			<input  id="input-showVectors" type="checkbox" @bind="ShowVectors" disabled="@(!ShowGrid)" />
-		</form>
-	</section>
+			<h3>Overlay</h3>
+			<form id="showGrid">
+				<label for="input-showGrid">Show Grid</label>
+				<input id="input-showGrid" type="checkbox" @bind="ShowGrid" />
+			</form>
+			<form id="showVectors">
+				<label for="input-showVectors">Show Vectors</label>
+				<input id="input-showVectors" type="checkbox" @bind="ShowVectors" disabled="@(!ShowGrid)" />
+			</form>
+		}
+		
+	</Section>
 </main>
 
 @code
 {
+	// RNG properties.
+	//TODO: RNG selector.
 	public int Seed { get; set; } = 420;
-	public int CellCount { get; set; } = 8;
+
+	// Perlin noise properties.
+	public uint CellCount { get; set; } = 8;
 	public bool Wrap { get; set; } = false;
 
+	// Output properties.
 	public int TextureSize { get; set; } = 128;
 
+	// Visualizer properties.
+	public byte[]? pixelData = null;
+	private float[,,] GradientMatrix { get; set; } = new float[9, 9, 2];	//TODO: null
 	public bool ShowGrid { get; set; } = false;
 	public bool ShowVectors { get; set; } = false;
 
-	//TODO: Valori di ritorno vaghi, indagare sul cosa ho fatto.
-	private float GridSize => 256 / CellCount;
-	private float[,,] GradientMatrix { get; set; } = new float[9, 9, 2];
+	// Generation task properties.
+	private bool isGenerating = false;
+	private float generationProgress = 0.0f;
+	private CancellationTokenSource? generationTokenSource = null;
 
 	protected override async Task OnInitializedAsync()
 	{
 		await JSHost.ImportAsync("PerlinNoise2D", "../Pages/PerlinNoise2D.razor.js");
-		GenerateTexture();
+		await QueueNoiseGenerationAsync();
 	}
 
-	private void GenerateTexture()
+	private async Task QueueNoiseGenerationAsync()
 	{
-		PGAL.Noise.PerlinNoise2D noise = new(Seed, (uint) CellCount, Wrap);
-		Rgba32[] textureData = new Rgba32[TextureSize * TextureSize];
+		pixelData = null;
+		generationProgress = 0;
+		isGenerating = true;
+		StateHasChanged();
+
+		// Request cancellation of a previuos generation task (if any).
+		generationTokenSource?.Cancel();
+		generationTokenSource?.Dispose();
+		generationTokenSource = new CancellationTokenSource();
+
+		Progress<float> progress = new Progress<float>((currentProgress) =>  generationProgress = currentProgress);
+
+		await Task.Run(
+			async () =>
+			{
+				await GenerateImage(progress, generationTokenSource.Token);
+				GenerateVectors();
+			},
+			generationTokenSource.Token
+		);
+		isGenerating = false;
+		StateHasChanged();
+	}
+
+	private async Task GenerateImage(IProgress<float> progress, CancellationToken cancellationToken)
+	{
+		// Generates texture data.
+		PGAL.Noise.PerlinNoise2D noise = new(Seed, CellCount, Wrap);
+		byte[] buffer = new byte[TextureSize * TextureSize * 4];
 		for (int y = 0; y < TextureSize; y++)
 		{
+			cancellationToken.ThrowIfCancellationRequested();
+
 			for (int x = 0; x < TextureSize; x++)
 			{
 				var sx = CellCount * (float)x / TextureSize;
 				var sy = CellCount * (float)y / TextureSize;
 				byte v = (byte)(noise.At(sx, sy) * 255);
-				textureData[TextureSize * y + x] = new Rgba32(v, v, v);
+				buffer[(x + y * TextureSize) * 4 + 0] = v;
+				buffer[(x + y * TextureSize) * 4 + 1] = v;
+				buffer[(x + y * TextureSize) * 4 + 2] = v;
+				buffer[(x + y * TextureSize) * 4 + 3] = 255;
 			}
+			progress.Report((float)y / (float)TextureSize);
+			await InvokeAsync(StateHasChanged);
+			await Task.Yield();
 		}
-
-		Image<Rgba32> a = Image<Rgba32>.LoadPixelData(new ReadOnlySpan<Rgba32>(textureData), TextureSize, TextureSize);
-		MemoryStream ms = new();
-		a.SaveAsPng(ms);
-		byte[] pngBuffer = ms.ToArray();
-		LoadImage(pngBuffer);
-		GenerateVectors();
+		pixelData = buffer;
+		LoadImage("result-canvas", pixelData, TextureSize);
 	}
 
 	private void GenerateVectors()
 	{
 		GradientMatrix = new float[CellCount + 1, CellCount + 1, 2];
-		Random r = new(Seed);
+		//Random r = new(Seed);
+		Splitmix64 seedGenerator = new((ulong)Seed);
+		RandomXoshiro128Plus r = new(seedGenerator.Next(), seedGenerator.Next());
 		for (int y = 0; y < (CellCount + 1); y++)
 		{
 			for (int x = 0; x < (CellCount + 1); x++)

@@ -7,5 +7,5 @@ namespace WebShowcase.Pages;
 public partial class PerlinNoise2D
 {
 	[JSImport("loadImage", "PerlinNoise2D")]
-	internal static partial void LoadImage(byte[] data);
+	internal static partial void LoadImage(string canvasId, byte[] data, int textureSize);
 }

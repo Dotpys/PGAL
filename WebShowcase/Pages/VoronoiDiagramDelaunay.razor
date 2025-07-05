@@ -3,15 +3,14 @@
 @using System.Numerics
 @using System.Runtime.InteropServices.JavaScript
 @using System.Text
+@using WebShowcase.Component
 
 <PageTitle>Delaunay Triangulation</PageTitle>
 
 <h1>Delaunay Triangulation</h1>
 
 <main>
-	<section id="configuration">
-		<h2>Configuration</h2>
-
+	<Section Title="Configuration">
 		<h3>Site Generation</h3>
 
 		<form>
@@ -25,11 +24,9 @@
 		</form>
 
 		<button type="button" onclick="@(() => @GenerateSites())">Generate</button>
-	</section>
+	</Section>
 
-	<section id="result">
-		<h2>Result Image</h2>
-
+	<Section Title="Result">
 		<svg id="viewport" viewBox="0 0 100 100" @onclick=OnSVGClick >
 
 			@foreach (var triangle in triangulation)
@@ -69,7 +66,7 @@
 		<h3>Controls</h3>
 		<p>Click on the canvas above to insert new sites or to remove them.</p>
 
-	</section>
+	</Section>
 </main>
 
 @code

@@ -2,15 +2,14 @@
 @using System.Globalization
 @using System.Numerics
 @using System.Text
+@using WebShowcase.Component
 
 <PageTitle>Voronoi Diagram</PageTitle>
 
 <h1>Voronoi Diagram</h1>
 
 <main>
-	<section id="configuration">
-		<h2>Configuration</h2>
-
+	<Section Title="Configuration">
 		<h3>Voronoi Diagram</h3>
 
 		<form>
@@ -24,11 +23,9 @@
 		</form>
 
 		<button type="button" onclick="@(() => @GenerateSites())">Generate</button>
-	</section>
+	</Section>
 
-	<section id="result">
-		<h2>Result Image</h2>
-
+	<Section Title="Result">
 		<svg viewBox="0 0 100 100">
 			<!--Sites-->
 			@foreach (var site in sites)
@@ -63,7 +60,7 @@
 			<label for="customRange1">Sweep progress: @(SweepProgress)%</label>
 			<input type="range" id="customRange1" min="0" max="@MAX_SIZE" @bind="SweepProgress" @bind:event="oninput" />
 		</form>
-	</section>
+	</Section>
 </main>
 
 @code {

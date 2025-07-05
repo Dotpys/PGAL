@@ -1,4 +1,6 @@
-﻿namespace PGAL.Noise;
+﻿using RandomExtensions;
+
+namespace PGAL.Noise;
 
 public sealed class PerlinNoise2D : PerlinNoiseBase
 {
@@ -8,7 +10,8 @@ public sealed class PerlinNoise2D : PerlinNoiseBase
 	{
 		CellCount = cellCount;
 		GradientMatrix = new float[GridSize, GridSize, 2];
-		Random r = new(seed);
+		Splitmix64 seedGenerator = new((ulong)seed);
+		RandomXoshiro128Plus r = new (seedGenerator.Next(), seedGenerator.Next());
 		for (int y = 0; y < GridSize; y++)
 		{
 			for (int x = 0; x < GridSize; x++)
